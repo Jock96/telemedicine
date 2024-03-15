@@ -1,0 +1,8 @@
+.commentsContainer {
+    width: 100%;
+
+    & .ant-collapse-content {
+        max-height: 200px; 
+        overflow-y: auto;
+    }
+}
