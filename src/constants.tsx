@@ -12,9 +12,9 @@ export enum Routes {
   PersonalArea = "/personalArea",
 }
 
-export const generateRoutes = (medic?: boolean) =>
+export const generateRoutes = (specialist?: boolean) =>
   createBrowserRouter(
-    medic
+    specialist
       ? []
       : [
           {

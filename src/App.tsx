@@ -24,11 +24,12 @@ import locale from 'antd/locale/ru_RU';
 //
 
 function App() {
-  const medic = false; // TODO: после авторизации проверять кто
+  // TODO: каждой специализации свой цвет
+  const specialist = false; // TODO: после авторизации проверять кто
   return (
     <ConfigProvider locale={locale}>
       <AntApp>
-        <RouterProvider router={generateRoutes(medic)} />
+        <RouterProvider router={generateRoutes(specialist)} />
       </AntApp>
     </ConfigProvider>
   );

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Calendar, Card, Space, Modal, Typography } from "antd";
+import { Calendar, Card, Flex, Modal, Typography } from "antd";
 import { SelectInfo } from "antd/es/calendar/generateCalendar";
 import { SpecialistCard, Page } from "../../components";
 import { SPECIALISTS_LIST } from "../../mocks";
@@ -13,7 +13,7 @@ export const SpecialistPage: FC = () => {
   const medik = SPECIALISTS_LIST.find(({ id }) => id === parmaId);
 
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<dayjs.Dayjs>()
+  const [date, setDate] = useState<dayjs.Dayjs>();
 
   const handleSelect = (date: dayjs.Dayjs, selectInfo: SelectInfo) => {
     if (selectInfo.source === "year" || selectInfo.source === "month") return;
@@ -32,7 +32,7 @@ export const SpecialistPage: FC = () => {
 
   return (
     <Page>
-      <Space direction="vertical" style={{ width: "100%" }} size={24}>
+      <Flex vertical style={{ width: "100%" }} gap={24}>
         <SpecialistCard {...medik} showLess />
         <Card>
           <Typography.Title level={5} style={{ textAlign: "center" }}>
@@ -44,13 +44,13 @@ export const SpecialistPage: FC = () => {
             className="specialistCalendar"
           />
         </Card>
-      </Space>
+      </Flex>
       <Modal
         open={open}
         centered
         onCancel={handleCancel}
         footer={null}
-        title={`Запись на ${date?.format('DD.MM.YYYY')}`}
+        title={`Запись на ${date?.format("DD.MM.YYYY")}`}
       />
     </Page>
   );
