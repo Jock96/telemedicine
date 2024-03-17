@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Card, Flex } from "antd";
 import { Page } from "../../components";
 import { SPECIALISTS_LIST } from "../../mocks";
-import { CommonInfo, Consultations, PaymentMethods } from "./components";
+import { CommonInfo, Consultations, PaymentMethods, VisitedSpecialists } from "./components";
 
 export const PersonalArea: FC = () => {
   // TODO:
@@ -18,6 +18,10 @@ export const PersonalArea: FC = () => {
         </Card>
         <Card>
           <Consultations />
+        </Card>
+        <Card>
+          {/* TODO: только для пользователя */}
+          <VisitedSpecialists />
         </Card>
       </Flex>
     </Page>

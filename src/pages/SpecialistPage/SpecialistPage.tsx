@@ -1,57 +1,29 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useParams } from "react-router-dom";
-import { Calendar, Card, Flex, Modal, Typography } from "antd";
-import { SelectInfo } from "antd/es/calendar/generateCalendar";
-import { SpecialistCard, Page } from "../../components";
+import { Card, Flex, Typography } from "antd";
+import { SpecialistCard, Page, RegisterCalendar } from "../../components";
 import { SPECIALISTS_LIST } from "../../mocks";
 import { NotFoundPage } from "../NotFoundPage";
-import dayjs from "dayjs";
-import "./SpecialistPage.css";
 
 export const SpecialistPage: FC = () => {
   const { id: parmaId } = useParams();
-  const medik = SPECIALISTS_LIST.find(({ id }) => id === parmaId);
+  const specialist = SPECIALISTS_LIST.find(({ id }) => id === parmaId);
 
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<dayjs.Dayjs>();
-
-  const handleSelect = (date: dayjs.Dayjs, selectInfo: SelectInfo) => {
-    if (selectInfo.source === "year" || selectInfo.source === "month") return;
-
-    setOpen(true);
-    setDate(date);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
-
-  if (!medik) {
+  if (!specialist) {
     return <NotFoundPage />;
   }
 
   return (
     <Page>
       <Flex vertical style={{ width: "100%" }} gap={24}>
-        <SpecialistCard {...medik} showLess />
+        <SpecialistCard {...specialist} showLess />
         <Card>
           <Typography.Title level={5} style={{ textAlign: "center" }}>
             Запись к специалисту
           </Typography.Title>
-          <Calendar
-            validRange={[dayjs(), dayjs().add(1, "year")]}
-            onSelect={handleSelect}
-            className="specialistCalendar"
-          />
+          <RegisterCalendar />
         </Card>
       </Flex>
-      <Modal
-        open={open}
-        centered
-        onCancel={handleCancel}
-        footer={null}
-        title={`Запись на ${date?.format("DD.MM.YYYY")}`}
-      />
     </Page>
   );
 };

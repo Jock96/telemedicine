@@ -12,6 +12,10 @@ export enum Routes {
   PersonalArea = "/personalArea",
 }
 
+export const DATE_FORMAT = "DD.MM.YYYY";
+export const TIME_FORMAT = "HH:mm";
+export const DATE_AND_TIME_FORMAT = "DD.MM.YYYY HH:mm";
+
 export const generateRoutes = (specialist?: boolean) =>
   createBrowserRouter(
     specialist

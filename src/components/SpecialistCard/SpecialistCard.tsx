@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import { ISpecialist } from "../../entities";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./SpecialistCard.css";
 import { Routes } from "../../constants";
 import { getFullName } from "../../helpers";
@@ -30,16 +30,22 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
   showLess,
 }) => {
   const collapseRef = useRef<HTMLDivElement>(null);
+
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const handleClick: MouseEventHandler<HTMLDivElement> = (event) => {
     if (collapseRef.current?.contains(event.target as Node)) return;
-    navigate(`${Routes.Specialist}/${id}`);
+    navigate(`${Routes.Specialist}/${id}`, { state: { prevUrl: pathname } });
   };
   const rating =
     comments.reduce((acc, { rating }) => acc + rating, 0) / comments.length;
   const fullName = getFullName({ firstName, lastName, patronymic });
   return (
-    <Card onClick={handleClick} style={{ width: "100%", cursor: "pointer" }}>
+    <Card
+      onClick={handleClick}
+      style={{ width: "100%", cursor: "pointer", border: "none" }}
+    >
       <Flex vertical style={{ width: "100%" }}>
         <Flex align="flex-start" style={{ width: "100%" }}>
           <Image src={photoUrl} preview={false} />
@@ -55,7 +61,7 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
               defaultValue={rating}
               character={<HeartOutlined />}
             />
-            <Flex gap={4}>
+            <Flex gap={4} wrap="wrap">
               {/* TODO: множественное число */}
               <Typography.Text>Специализации:</Typography.Text>
               {specializations.map((specialization, index) => (

@@ -4,13 +4,14 @@ import type { IUser } from "../../../../entities/user";
 import { getFullName } from "../../../../helpers/getFullName";
 import { TooltipWrapper } from "../../../../components/TooltipWrapper";
 
-export const CommonInfo: FC<IUser> = ({
+export const CommonInfo: FC<IUser & { canEdit?: boolean }> = ({
   firstName,
   lastName,
   patronymic,
   phone,
   email,
   photoUrl,
+  canEdit = true,
 }) => {
   const fullName = getFullName({ firstName, lastName, patronymic });
   // TODO: только два пробела
@@ -44,20 +45,28 @@ export const CommonInfo: FC<IUser> = ({
       <Flex vertical gap={8}>
         <Typography.Text
           strong
-          editable={{
-            onChange: handleFullNameChange,
-            tooltip: false,
-          }}
+          editable={
+            canEdit
+              ? {
+                  onChange: handleFullNameChange,
+                  tooltip: false,
+                }
+              : undefined
+          }
         >
           {tempFullName?.trim() === "" ? fullName : tempFullName}
         </Typography.Text>
         <Flex gap={4}>
           <Typography.Text>Электронная почта:</Typography.Text>
           <Typography.Text
-            editable={{
-              onChange: handleEmailChange,
-              tooltip: false,
-            }}
+            editable={
+              canEdit
+                ? {
+                    onChange: handleEmailChange,
+                    tooltip: false,
+                  }
+                : undefined
+            }
           >
             {tempEmail?.trim() === "" ? email : tempEmail}
           </Typography.Text>
@@ -65,10 +74,14 @@ export const CommonInfo: FC<IUser> = ({
         <Flex gap={4}>
           <Typography.Text>Номер телефона:</Typography.Text>
           <Typography.Text
-            editable={{
-              onChange: handlePhoneChange,
-              tooltip: false,
-            }}
+            editable={
+              canEdit
+                ? {
+                    onChange: handlePhoneChange,
+                    tooltip: false,
+                  }
+                : undefined
+            }
           >
             {tempPhone?.trim() === "" ? phone : tempPhone}
           </Typography.Text>
