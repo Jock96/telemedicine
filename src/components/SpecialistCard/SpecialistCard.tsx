@@ -16,6 +16,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./SpecialistCard.css";
 import { Routes } from "../../constants";
 import { getFullName } from "../../helpers";
+import { getYearsOfWorkExpirience } from "../../helpers/getYearsOfWorkExpirience";
 
 export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
   id,
@@ -38,8 +39,9 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
     if (collapseRef.current?.contains(event.target as Node)) return;
     navigate(`${Routes.Specialist}/${id}`, { state: { prevUrl: pathname } });
   };
-  const rating =
-    comments.reduce((acc, { rating }) => acc + rating, 0) / comments.length;
+  const rating = comments.length
+    ? comments.reduce((acc, { rating }) => acc + rating, 0) / comments.length
+    : 0;
   const fullName = getFullName({ firstName, lastName, patronymic });
   return (
     <Card
@@ -48,7 +50,7 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
     >
       <Flex vertical style={{ width: "100%" }}>
         <Flex align="flex-start" style={{ width: "100%" }}>
-          <Image src={photoUrl} preview={false} />
+          <Image src={photoUrl} preview={false} style={{ width: "300px" }} />
           <Flex
             vertical
             gap={12}
@@ -56,11 +58,14 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
             style={{ height: "100%" }}
           >
             <Typography.Text strong>{fullName}</Typography.Text>
-            <Rate
-              disabled
-              defaultValue={rating}
-              character={<HeartOutlined />}
-            />
+            <Flex align="center" gap={8}>
+              <Rate
+                disabled
+                defaultValue={Number(rating.toFixed(2))}
+                character={<HeartOutlined />}
+              />
+              <Typography.Text strong>{rating.toFixed(2)}</Typography.Text>
+            </Flex>
             <Flex gap={4} wrap="wrap">
               {/* TODO: множественное число */}
               <Typography.Text>Специализации:</Typography.Text>
@@ -70,7 +75,7 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
             </Flex>
             <Flex gap={4}>
               <Typography.Text>Стаж работы:</Typography.Text>
-              <Typography.Text>{yearsOfWorkExpirience}</Typography.Text>
+              <Typography.Text>{getYearsOfWorkExpirience(yearsOfWorkExpirience)}</Typography.Text>
             </Flex>
             {!showLess && (
               <Flex gap={4}>

@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import type { IConsultation } from "../../../../entities/consultation";
+import type { IConsultation } from "../../../../entities";
 import { Avatar, Tag, Button, Tooltip } from "antd";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { getFullName } from "../../../../helpers";

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Flex, Image, Typography } from "antd";
-import type { IUser } from "../../../../entities/user";
+import type { IUser } from "../../../../entities";
 import { getFullName } from "../../../../helpers/getFullName";
 import { TooltipWrapper } from "../../../../components/TooltipWrapper";
 
@@ -40,7 +40,7 @@ export const CommonInfo: FC<IUser & { canEdit?: boolean }> = ({
   return (
     <Flex>
       <TooltipWrapper wrap={!photoUrl} title="Кликните чтобы загрузить фото">
-        <Image preview={false} onClick={handleDownloadPhoto} src={photoUrl} />
+        <Image preview={false} onClick={handleDownloadPhoto} src={photoUrl} style={{ width: "300px" }} />
       </TooltipWrapper>
       <Flex vertical gap={8}>
         <Typography.Text

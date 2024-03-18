@@ -1,7 +1,7 @@
 import type { ISpecialist, ISpecialization } from "../entities";
-import type { IComment } from "../entities/comment";
-import { IConsultation } from "../entities/consultation";
-import type { ICurrency } from "../entities/currency";
+import type { IComment } from "../entities";
+import type { IConsultation } from "../entities";
+import type { ICurrency } from "../entities";
 import dayjs from "dayjs";
 
 export const photoUrl = (id: number) =>
@@ -20,7 +20,7 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     firstName: "firstName",
     lastName: "lastName",
     patronymic: "patronymic",
-    yearsOfWorkExpirience: getRandomInt(0, 20),
+    yearsOfWorkExpirience: dayjs().toString(),
     workDuration: "2024", // string iso ?
     comments: Array(getRandomInt(0, 20))
       .fill({} as IComment)
@@ -48,7 +48,37 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     workTime: {},
     nearestWorkTime: "2024", // string iso ?
     slots: [
-      [new Date(getRandomInt(0, 2024)), new Date(getRandomInt(0, 2024) + 1)],
+      {
+        date: dayjs().toString(),
+        value: [
+          {
+            from: dayjs()
+              .set("hour", 0)
+              .set("minute", 0)
+              .set("second", 0)
+              .toString(),
+            to: dayjs()
+              .set("hour", 0)
+              .set("minute", 0)
+              .set("second", 0)
+              .add(2, "hour")
+              .toString(),
+          },
+          {
+            from: dayjs()
+              .set("hour", 3)
+              .set("minute", 3)
+              .set("second", 3)
+              .toString(),
+            to: dayjs()
+              .set("hour", 3)
+              .set("minute", 3)
+              .set("second", 3)
+              .add(2, "hour")
+              .toString(),
+          },
+        ],
+      },
     ],
   }));
 

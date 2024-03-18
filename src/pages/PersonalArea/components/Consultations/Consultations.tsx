@@ -5,7 +5,7 @@ import { generateColumns } from "./constants";
 import { CONSULTATIONS } from "../../../../mocks/index";
 import "./Consultations.css";
 import dayjs from "dayjs";
-import type { IConsultation } from "../../../../entities/consultation";
+import type { IConsultation } from "../../../../entities";
 import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants";
 import { SpecialistCard } from "../../../../components";
 

@@ -22,7 +22,7 @@ export const LayoutHeader: FC<ComponentProps<typeof Layout.Header>> =
         style={{
           position: "sticky",
           top: 0,
-          zIndex: 10,
+          zIndex: 10000,
           width: "100%",
           display: "flex",
           alignItems: "center",
