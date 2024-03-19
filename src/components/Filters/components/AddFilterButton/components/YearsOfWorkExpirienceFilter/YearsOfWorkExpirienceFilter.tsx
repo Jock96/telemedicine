@@ -51,7 +51,7 @@ export const YearsOfWorkExpirienceFilter: FC<
   };
 
   const handleChange = (value?: IYearsOfWorkExpirience) => {
-    setSimpleValue(value);
+    setSimpleValue((prevValue) => ({ ...prevValue, ...value }));
   };
 
   const handleApply = () => {
@@ -74,9 +74,9 @@ export const YearsOfWorkExpirienceFilter: FC<
     (filterType === "range" &&
       (!rangeValue || rangeValue.some((value) => value === undefined))) ||
     (filterType === "range" &&
-    (rangeValue?.[0]?.years ?? 0) === (rangeValue?.[1]?.years ?? 0)
-      ? (rangeValue?.[0]?.months ?? 0) >= (rangeValue?.[1]?.months ?? 0)
-      : (rangeValue?.[0]?.years ?? 0) >= (rangeValue?.[1]?.years ?? 0)) ||
+      ((rangeValue?.[0]?.years ?? 0) === (rangeValue?.[1]?.years ?? 0)
+        ? (rangeValue?.[0]?.months ?? 0) >= (rangeValue?.[1]?.months ?? 0)
+        : (rangeValue?.[0]?.years ?? 0) >= (rangeValue?.[1]?.years ?? 0))) ||
     (filterType !== "range" && !simpleValue);
 
   return (

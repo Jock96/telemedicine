@@ -47,5 +47,11 @@ export const generateLabel = ({ key, data, type }: IFilterLabelGenerator) =>
               FILTER_TYPE_TO_LABEL_PREFIX[type]
                 ? FILTER_TYPE_TO_LABEL_PREFIX[type] + " "
                 : ""
-            }${data.value}`
+            }${
+              key === "yearsOfWorkExpirience"
+                ? generateYearsOfWorkExpirienceLabel(
+                    data.value as IYearsOfWorkExpirience
+                  )
+                : data.value
+            }`
       }`;

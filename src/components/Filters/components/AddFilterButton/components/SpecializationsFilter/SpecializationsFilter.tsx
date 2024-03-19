@@ -50,7 +50,12 @@ export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
       value={data?.value}
       onChange={handleChange}
       options={options}
-      style={{ width: 150 + (data?.value.length ?? 0) * LABEL_OFFSET }}
+      style={{
+        width:
+          150 +
+          ((data?.value.length ?? 0) > 5 ? 5 : data?.value.length ?? 0) *
+            LABEL_OFFSET,
+      }}
     />
   ) : (
     <TooltipWrapper
