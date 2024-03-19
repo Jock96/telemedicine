@@ -1,12 +1,3 @@
-import type { IFilter } from "../../../../entities";
+import type { IAllowedFilters, IFilterChanger, IForbiddenFilters } from "../../types";
 
-export type IAddFilterButton = Omit<IFilter, "search">;
-
-export interface IFilterChanger {
-  onChange: (
-    key: keyof IAddFilterButton,
-    data: IAddFilterButton[keyof IAddFilterButton]
-  ) => void;
-}
-
-export interface IAddFilterButtonProps extends IAddFilterButton, IFilterChanger {}
+export interface IAddFilterButtonProps extends IAllowedFilters, IFilterChanger, IForbiddenFilters {}

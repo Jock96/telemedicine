@@ -1,27 +1,41 @@
 import { FC, useState } from "react";
 import { Flex, Button, Dropdown } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import type {
-  IAddFilterButton,
-  IAddFilterButtonProps,
-  IFilterChanger,
-} from "./types";
+import type { IAddFilterButtonProps } from "./types";
 import { FilterKeyToLabelMap } from "./constants";
 import { FilterSwitch, IFilterSwitch } from "./components";
+import type { IAllowedFilters, IFilterChanger } from "../../types";
+import type { IFilter } from "../../../../entities";
 
 export const AddFilterButton: FC<IAddFilterButtonProps> = ({
   onChange,
+  forbiddenFilters: forbiddenFiltersProp,
   ...filter
 }) => {
+  const forbiddenFilters = forbiddenFiltersProp
+    ? Array.from(new Set(forbiddenFiltersProp))
+    : undefined;
+
   const [preparingFilterKey, setPreparingFilterKey] =
-    useState<keyof IAddFilterButton>();
+    useState<keyof IAllowedFilters>();
 
-  const filterValues = Object.values(filter);
+  const allowedFilter: IFilter = forbiddenFilters
+    ? Object.entries(filter)
+        .filter(
+          ([key]) => !forbiddenFilters.includes(key as keyof IAllowedFilters)
+        )
+        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+    : filter;
+
+  const filterValues = Object.values(allowedFilter);
+
   const canShowAddFilterButton =
-    !filterValues.length ||
-    filterValues.some(({ value }) => value !== undefined);
+    (!filterValues.length ||
+      filterValues.some(({ value }) => value !== undefined)) &&
+    filterValues.length !== Object.keys(FilterKeyToLabelMap).length &&
+    forbiddenFilters?.length !== Object.keys(FilterKeyToLabelMap).length;
 
-  const prepareFilter = (key: keyof IAddFilterButton) => {
+  const prepareFilter = (key: keyof IAllowedFilters) => {
     setPreparingFilterKey(key);
   };
 
@@ -31,8 +45,8 @@ export const AddFilterButton: FC<IAddFilterButtonProps> = ({
   };
 
   return (
-    <Flex gap={4}>
-      {Object.entries(filter).map(([key, value]) => (
+    <Flex gap={4} wrap="wrap">
+      {Object.entries(allowedFilter).map(([key, value]) => (
         <FilterSwitch
           key={key}
           type={key as IFilterSwitch["type"]}
@@ -47,13 +61,19 @@ export const AddFilterButton: FC<IAddFilterButtonProps> = ({
         <Dropdown
           menu={{
             items: Object.entries(FilterKeyToLabelMap)
+              .filter(([key]) =>
+                forbiddenFilters
+                  ? !forbiddenFilters.includes(key as keyof IAllowedFilters)
+                  : true
+              )
               .filter(
-                ([key]) => filter[key as keyof IAddFilterButton] === undefined
+                ([key]) =>
+                  allowedFilter[key as keyof IAllowedFilters] === undefined
               )
               .map(([key, label]) => ({
                 key,
                 label,
-                onClick: () => prepareFilter(key as keyof IAddFilterButton),
+                onClick: () => prepareFilter(key as keyof IAllowedFilters),
               })),
           }}
         >

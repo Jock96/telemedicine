@@ -1,13 +1,16 @@
 import { FC, useState } from "react";
 import { Calendar, Table, Switch, Flex, Typography, Badge, Modal } from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
-import { generateColumns } from "./constants";
+import {
+  generateColumns,
+  PersonalAreaConsultationIsCalendarKey,
+} from "./constants";
 import { CONSULTATIONS } from "../../../../mocks/index";
 import "./Consultations.css";
 import dayjs from "dayjs";
 import type { IConsultation } from "../../../../entities";
 import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants";
-import { SpecialistCard } from "../../../../components";
+import { Filters, SpecialistCard } from "../../../../components";
 
 export const Consultations: FC = () => {
   const specialist = false; // TODO: после авторизации проверять кто и менять вью (надо ли ?)
@@ -26,8 +29,23 @@ export const Consultations: FC = () => {
     onChangeConsultationDate,
   });
 
-  const [isCalendar, setIsCalendar] = useState(true);
-  const toggleView = () => setIsCalendar((prev) => !prev);
+  const isCalendarFromLocalStorage = window.localStorage.getItem(
+    PersonalAreaConsultationIsCalendarKey
+  );
+  const initIsCalendar: boolean = isCalendarFromLocalStorage
+    ? JSON.parse(isCalendarFromLocalStorage)
+    : true;
+
+  const [isCalendar, setIsCalendar] = useState(initIsCalendar);
+
+  const toggleView = () =>
+    setIsCalendar((prev) => {
+      window.localStorage.setItem(
+        PersonalAreaConsultationIsCalendarKey,
+        JSON.stringify(!prev)
+      );
+      return !prev;
+    });
 
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<dayjs.Dayjs>();
@@ -142,17 +160,23 @@ export const Consultations: FC = () => {
           </Modal>
         </>
       ) : (
-        <Table
-          style={{ cursor: "pointer" }}
-          onRow={({ id }) => ({
-            onClick: () => showUserInfo(id),
-          })}
-          columns={columns}
-          // TODO:
-          loading={false}
-          // TODO:
-          dataSource={CONSULTATIONS}
-        />
+        <>
+          <Filters
+            hideSort
+            forbiddenFilters={["yearsOfWorkExpirience", "rating"]}
+          />
+          <Table
+            style={{ cursor: "pointer" }}
+            onRow={({ id }) => ({
+              onClick: () => showUserInfo(id),
+            })}
+            columns={columns}
+            // TODO:
+            loading={false}
+            // TODO:
+            dataSource={CONSULTATIONS}
+          />
+        </>
       )}
       {selectedSpecialist && (
         <Modal

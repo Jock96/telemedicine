@@ -24,29 +24,48 @@ export const NumericFilterHeader: FC<NumericFilterHeaderProps> = ({
 
   return (
     <Flex vertical gap={8}>
-      <Radio.Group onChange={handleChange} value={type}>
+      <Radio.Group
+        onChange={handleChange}
+        value={type}
+        style={{ display: "flex" }}
+      >
         <Tooltip title="Меньше">
-          <Radio.Button value="less">
+          <Radio.Button
+            value="less"
+            style={{ flex: 1, display: "flex", justifyContent: "center" }}
+          >
             <LeftOutlined />
           </Radio.Button>
         </Tooltip>
         <Tooltip title="Меньше или равно">
-          <Radio.Button value="less-or-equal">
+          <Radio.Button
+            value="less-or-equal"
+            style={{ flex: 1, display: "flex", justifyContent: "center" }}
+          >
             <DoubleLeftOutlined />
           </Radio.Button>
         </Tooltip>
         <Tooltip title="Равно">
-          <Radio.Button value="equal">
+          <Radio.Button
+            value="equal"
+            style={{ flex: 1, display: "flex", justifyContent: "center" }}
+          >
             <SwapOutlined />
           </Radio.Button>
         </Tooltip>
         <Tooltip title="Больше или равно">
-          <Radio.Button value="more-or-equal">
+          <Radio.Button
+            value="more-or-equal"
+            style={{ flex: 1, display: "flex", justifyContent: "center" }}
+          >
             <DoubleRightOutlined />
           </Radio.Button>
         </Tooltip>
         <Tooltip title="Больше">
-          <Radio.Button value="more">
+          <Radio.Button
+            value="more"
+            style={{ flex: 1, display: "flex", justifyContent: "center" }}
+          >
             <RightOutlined />
           </Radio.Button>
         </Tooltip>

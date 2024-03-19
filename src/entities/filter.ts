@@ -1,4 +1,6 @@
-import { ISpecialization } from "./specialization";
+import type { ISorter } from "./sorter";
+import type { ISpecialist } from "./specialist";
+import type { ISpecialization } from "./specialization";
 
 export type IFilterType =
   | "more"
@@ -12,7 +14,7 @@ export interface IFilter {
   search?: string;
   yearsOfWorkExpirience?: {
     filterType: IFilterType;
-    value: string | [string, string];
+    value: ISpecialist["yearsOfWorkExpirience"] | [ISpecialist["yearsOfWorkExpirience"], ISpecialist["yearsOfWorkExpirience"]];
   };
   rating?: {
     filterType: IFilterType;
@@ -20,9 +22,10 @@ export interface IFilter {
   };
   nearestWorkTime?: {
     filterType: IFilterType;
-    value: string | [string, string];
+    value: ISpecialist["nearestWorkTime"] | [ISpecialist["nearestWorkTime"], ISpecialist["nearestWorkTime"]];
   };
   specializations?: {
     value: ISpecialization[];
   };
+  sort?: ISorter[]
 }

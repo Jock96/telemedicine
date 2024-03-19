@@ -1,2 +1,2 @@
 export { FilterSwitch } from "./FilterSwitch"
-export type { IFilterSwitch } from './types'
+export type { IFilterSwitch, ISpecificFilter } from './types'

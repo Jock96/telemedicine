@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import type { IColumnGenerator } from "./types";
 import { DATE_AND_TIME_FORMAT } from "../../../../constants";
 
+export const PersonalAreaConsultationIsCalendarKey = 'PersonalAreaConsultationIsCalendar';
+
 // TODO: генерация разных колонок
 export const generateColumns = ({
   specialist,

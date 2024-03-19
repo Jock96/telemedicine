@@ -1,0 +1,10 @@
+.specializationsSelect {
+  & .ant-select-selector {
+    max-height: 32px;
+    overflow: hidden;
+  }
+
+  & .ant-select-selection-overflow {
+    overflow: hidden;
+  }
+}

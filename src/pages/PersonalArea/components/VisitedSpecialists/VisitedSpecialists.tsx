@@ -19,7 +19,7 @@ import {
 import { VISITED_SPECIALISTS } from "../../../../mocks";
 import { getFullName } from "../../../../helpers";
 import { ISpecialist } from "../../../../entities";
-import { CommentModal, SpecialistCard } from "../../../../components";
+import { CommentModal, Filters, SpecialistCard } from "../../../../components";
 import { RegisterCalendar } from "../../../../components/RegisterCalendar/RegisterCalendar";
 
 export const VisitedSpecialists: FC = () => {
@@ -81,83 +81,85 @@ export const VisitedSpecialists: FC = () => {
               </Typography.Text>
             ),
             children: (
-              <List
-                itemLayout="horizontal"
-                style={{ cursor: "pointer" }}
-                dataSource={VISITED_SPECIALISTS}
-                renderItem={(specialist) => (
-                  <>
-                    <List.Item
-                      extra={
-                        <Flex>
-                          {!!registerSpecialistId &&
-                          specialist.id === registerSpecialistId ? (
-                            <Tooltip title="Закрыть форму записи">
+              <Flex vertical>
+                {/* TODO: подумать как внедрить */}
+                {/* <Filters /> */}
+                <List
+                  itemLayout="horizontal"
+                  style={{ cursor: "pointer" }}
+                  dataSource={VISITED_SPECIALISTS}
+                  renderItem={(specialist) => (
+                    <>
+                      <List.Item
+                        extra={
+                          <Flex>
+                            {!!registerSpecialistId &&
+                            specialist.id === registerSpecialistId ? (
+                              <Tooltip title="Закрыть форму записи">
+                                <Button
+                                  type="text"
+                                  icon={<StopOutlined />}
+                                  onClick={() => hideRegisterCalendar()}
+                                />
+                              </Tooltip>
+                            ) : (
+                              <Tooltip title="Записаться повторно">
+                                <Button
+                                  type="text"
+                                  icon={<HistoryOutlined />}
+                                  onClick={() =>
+                                    showRegisterCalendar(specialist.id)
+                                  }
+                                />
+                              </Tooltip>
+                            )}
+                            {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
+                            <Tooltip title="Оставить комментарий">
                               <Button
                                 type="text"
-                                icon={<StopOutlined />}
-                                onClick={() =>
-                                  hideRegisterCalendar()
-                                }
+                                icon={<EditOutlined />}
+                                onClick={() => showCommentsModal(specialist.id)}
                               />
                             </Tooltip>
-                          ) : (
-                            <Tooltip title="Записаться повторно">
+                            <Tooltip title="Удалить из истории посещения">
                               <Button
                                 type="text"
-                                icon={<HistoryOutlined />}
-                                onClick={() =>
-                                  showRegisterCalendar(specialist.id)
-                                }
+                                icon={<CloseOutlined />}
+                                onClick={() => onDelete(specialist.id)}
                               />
                             </Tooltip>
-                          )}
-                          {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
-                          <Tooltip title="Оставить комментарий">
-                            <Button
-                              type="text"
-                              icon={<EditOutlined />}
-                              onClick={() => showCommentsModal(specialist.id)}
-                            />
-                          </Tooltip>
-                          <Tooltip title="Удалить из истории посещения">
-                            <Button
-                              type="text"
-                              icon={<CloseOutlined />}
-                              onClick={() => onDelete(specialist.id)}
-                            />
-                          </Tooltip>
-                        </Flex>
-                      }
-                    >
-                      <div
-                        style={{ display: "flex", width: "100%" }}
-                        onClick={() => showUserInfo(specialist.id)}
+                          </Flex>
+                        }
                       >
-                        <List.Item.Meta
-                          avatar={<Avatar src={specialist.photoUrl} />}
-                          title={getFullName(specialist)}
-                          description={
-                            <Flex wrap="wrap" gap={4}>
-                              {specialist.specializations.map(
-                                (specialization) => (
-                                  <Tag>{specialization}</Tag>
-                                )
-                              )}
-                            </Flex>
-                          }
-                        />
-                      </div>
-                    </List.Item>
-                    {!!registerSpecialistId &&
-                      specialist.id === registerSpecialistId && (
-                        <List.Item>
-                          <RegisterCalendar />
-                        </List.Item>
-                      )}
-                  </>
-                )}
-              />
+                        <div
+                          style={{ display: "flex", width: "100%" }}
+                          onClick={() => showUserInfo(specialist.id)}
+                        >
+                          <List.Item.Meta
+                            avatar={<Avatar src={specialist.photoUrl} />}
+                            title={getFullName(specialist)}
+                            description={
+                              <Flex wrap="wrap" gap={4}>
+                                {specialist.specializations.map(
+                                  (specialization) => (
+                                    <Tag>{specialization}</Tag>
+                                  )
+                                )}
+                              </Flex>
+                            }
+                          />
+                        </div>
+                      </List.Item>
+                      {!!registerSpecialistId &&
+                        specialist.id === registerSpecialistId && (
+                          <List.Item>
+                            <RegisterCalendar />
+                          </List.Item>
+                        )}
+                    </>
+                  )}
+                />
+              </Flex>
             ),
           },
         ]}

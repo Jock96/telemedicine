@@ -29,9 +29,18 @@ export function useUrlStatePrams<T>({
   const existingValue = search.get(paramsName);
   const prevExistingValue = useRef<string | null>(null);
 
-  const [state, setState] = useState<T | undefined>(
-    existingValue ? deserialize(existingValue) : initialState
-  );
+  const [state, setState] = useState<T | undefined>(() => {
+    if (!existingValue) {
+      const url = new URL(window.location.href)
+      const serialized = serialize(initialState);
+
+      if (serialized) url.searchParams.set(paramsName, serialized);
+
+      window.location.href = url.toString();
+    }
+
+    return existingValue ? deserialize(existingValue) : initialState;
+  });
 
   useEffect(() => {
     if (existingValue !== prevExistingValue.current) {

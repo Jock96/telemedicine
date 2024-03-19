@@ -2,10 +2,11 @@ import type { IComment } from "./comment";
 import type { IUser } from "./user";
 import type { IPrice } from "./price";
 import type { ISpecialization } from "./specialization";
-import { ISlot } from "./slot";
+import type { ISlot } from "./slot";
+import type { IYearsOfWorkExpirience } from "./yearsOfWorkExpirience";
 
 export interface ISpecialist extends IUser {
-    yearsOfWorkExpirience: string // стаж работы - iso
+    yearsOfWorkExpirience: IYearsOfWorkExpirience  // стаж работы - [количество лет, количество месяцев] [0 | 50, 0 | 11]
     workDuration: string; // длительность консультации - iso
     comments: IComment[]; // комменты
     specializations: ISpecialization[]; // специализации

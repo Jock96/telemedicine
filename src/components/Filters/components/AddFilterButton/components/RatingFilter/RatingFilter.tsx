@@ -1,30 +1,24 @@
 import { FC, useState } from "react";
-import type { IAddFilterButtonProps } from "../../types";
-import { Dropdown, Button, Flex, InputNumber } from "antd";
-import { useToken } from "antd/es/theme/internal";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import { FilterKeyToLabelMap } from "../../constants";
+import { Flex, InputNumber } from "antd";
 import { IFilterType } from "../../../../../../entities";
-import { NumericFilterHeader } from "../NumericFilterHeader";
-import { FILTER_TYPE_TO_LABEL_PREFIX, MAX_RANGE, MIN_RANGE } from "./constants";
+import { MAX_RANGE, MIN_RANGE } from "./constants";
+import { DefaultFilter } from "../DefaultFilter";
+import type { ISpecificFilter } from "../FilterSwitch";
 
-interface IRatingFilter {
-  value: IAddFilterButtonProps["rating"];
-  onChange: (data: IAddFilterButtonProps["rating"]) => void;
-}
-
-export const RatingFilter: FC<IRatingFilter> = ({ value, onChange }) => {
-  const [, token] = useToken();
-  const [filterType, setFilterType] = useState<IFilterType>("range");
+export const RatingFilter: FC<ISpecificFilter<"rating">> = ({
+  data,
+  onChange,
+}) => {
+  const [filterType, setFilterType] = useState<IFilterType>(
+    data?.filterType ? data.filterType : "range"
+  );
 
   const [simpleValue, setSimpleValue] = useState<number | undefined>(
-    Array.isArray(value?.value) ? undefined : value?.value
+    Array.isArray(data?.value) ? undefined : data?.value
   );
   const [rangeValue, setRangeValue] = useState<
     [number | undefined, number | undefined] | undefined
-  >(Array.isArray(value?.value) ? value?.value : undefined);
-
-  const [open, setOpen] = useState(!value);
+  >(Array.isArray(data?.value) ? data?.value : undefined);
 
   const handleSetFilterType = (type: IFilterType) => {
     setFilterType((prevType) => {
@@ -68,97 +62,64 @@ export const RatingFilter: FC<IRatingFilter> = ({ value, onChange }) => {
           : (simpleValue as number),
       filterType,
     });
-    setOpen(false);
   };
 
   const handleClose = () => {
     onChange(undefined);
-    setOpen(false);
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    if (value) {
-      setOpen(open);
-    }
   };
 
   const disabled =
     (filterType === "range" &&
-      (!rangeValue || rangeValue.some((value) => value === undefined))) ||
-    (!!rangeValue && Number(rangeValue[0]) >= Number(rangeValue[1])) ||
+      (!rangeValue ||
+        rangeValue.some((value) => value === undefined) ||
+        Number(rangeValue[0]) >= Number(rangeValue[1]))) ||
     (filterType !== "range" && !simpleValue);
 
-  const label = !value
-    ? FilterKeyToLabelMap["rating"]
-    : `${FilterKeyToLabelMap["rating"]}: ${
-        Array.isArray(value?.value)
-          ? `от ${value.value[0]} до ${value.value[1]}`
-          : `${FILTER_TYPE_TO_LABEL_PREFIX}${value}`
-      }`;
-
   return (
-    <Dropdown
-      open={open}
-      onOpenChange={handleOpenChange}
-      dropdownRender={() => (
-        <Flex
-          vertical
-          gap={8}
-          style={{
-            backgroundColor: token.colorBgElevated,
-            borderRadius: token.borderRadiusLG,
-            boxShadow: token.boxShadowSecondary,
-            padding: token.padding,
-          }}
-        >
-          <NumericFilterHeader
-            type={filterType}
-            onChange={handleSetFilterType}
-          />
-          {filterType === "range" ? (
-            <Flex vertical gap={8}>
-              <InputNumber
-                value={rangeValue ? rangeValue[0] : undefined}
-                type="number"
-                style={{ width: "100%" }}
-                min={MIN_RANGE}
-                max={MAX_RANGE}
-                maxLength={1}
-                placeholder="Введите значение от"
-                onChange={handleChangeFrom}
-              />
-              <InputNumber
-                value={rangeValue ? rangeValue[1] : undefined}
-                type="number"
-                style={{ width: "100%" }}
-                min={MIN_RANGE}
-                max={MAX_RANGE}
-                maxLength={1}
-                placeholder="Введите значение до"
-                onChange={handleChangeTo}
-              />
-            </Flex>
-          ) : (
-            <InputNumber
-              value={simpleValue}
-              type="number"
-              style={{ width: "100%" }}
-              min={MIN_RANGE}
-              max={MAX_RANGE}
-              maxLength={1}
-              placeholder="Введите значение от 0 до 5"
-              onChange={handleChange}
-            />
-          )}
-          <Button type="primary" disabled={disabled} onClick={handleApply}>
-            Применить
-          </Button>
-        </Flex>
-      )}
+    <DefaultFilter
+      filterKey="rating"
+      data={data}
+      type={filterType}
+      disabled={disabled}
+      onApply={handleApply}
+      onClose={handleClose}
+      onChangeType={handleSetFilterType}
     >
-      <Button icon={<CloseCircleOutlined onClick={handleClose} />}>
-        {label}
-      </Button>
-    </Dropdown>
+      {filterType === "range" ? (
+        <Flex vertical gap={8}>
+          <InputNumber
+            value={rangeValue ? rangeValue[0] : undefined}
+            type="number"
+            style={{ width: "100%" }}
+            min={MIN_RANGE}
+            max={MAX_RANGE}
+            maxLength={1}
+            placeholder="Введите значение от"
+            onChange={handleChangeFrom}
+          />
+          <InputNumber
+            value={rangeValue ? rangeValue[1] : undefined}
+            type="number"
+            style={{ width: "100%" }}
+            min={MIN_RANGE}
+            max={MAX_RANGE}
+            maxLength={1}
+            placeholder="Введите значение до"
+            onChange={handleChangeTo}
+          />
+        </Flex>
+      ) : (
+        <InputNumber
+          value={simpleValue}
+          type="number"
+          style={{ width: "100%" }}
+          min={MIN_RANGE}
+          max={MAX_RANGE}
+          maxLength={1}
+          placeholder="Введите значение от 0 до 5"
+          onChange={handleChange}
+        />
+      )}
+    </DefaultFilter>
   );
 };

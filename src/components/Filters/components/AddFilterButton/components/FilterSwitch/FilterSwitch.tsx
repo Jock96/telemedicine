@@ -11,14 +11,15 @@ export const FilterSwitch: FC<IFilterSwitch> = ({ type, value, onChange }) => {
     case "nearestWorkTime":
       return (
         <NearestWorkTimeFilter
-          value={value as IAddFilterButtonProps["nearestWorkTime"]}
+          onChange={(data) => onChange("nearestWorkTime", data)}
+          data={value as IAddFilterButtonProps["nearestWorkTime"]}
         />
       );
 
     case "rating":
       return (
         <RatingFilter
-          value={value as IAddFilterButtonProps["rating"]}
+          data={value as IAddFilterButtonProps["rating"]}
           onChange={(data) => onChange("rating", data)}
         />
       );
@@ -26,14 +27,16 @@ export const FilterSwitch: FC<IFilterSwitch> = ({ type, value, onChange }) => {
     case "specializations":
       return (
         <SpecializationsFilter
-          value={value as IAddFilterButtonProps["specializations"]}
+          data={value as IAddFilterButtonProps["specializations"]}
+          onChange={(data) => onChange("specializations", data)}
         />
       );
 
     case "yearsOfWorkExpirience":
       return (
         <YearsOfWorkExpirienceFilter
-          value={value as IAddFilterButtonProps["yearsOfWorkExpirience"]}
+          data={value as IAddFilterButtonProps["yearsOfWorkExpirience"]}
+          onChange={(data) => onChange("yearsOfWorkExpirience", data)}
         />
       );
 

@@ -1,11 +1,9 @@
-import dayjs from "dayjs";
+import type { ISpecialist } from "../entities/specialist";
 
-export const getYearsOfWorkExpirience = (date: string) => {
-  const years = dayjs(date).get("years");
-  const monthes = dayjs(date).get("months");
-
+export const getYearsOfWorkExpirience = ({
+  years,
+  months,
+}: ISpecialist["yearsOfWorkExpirience"]) => {
   // TODO: plural
-  return `${years ? `${years} года ` : ""}${
-    monthes ? `${monthes} месяца` : ""
-  }`;
+  return `${years ? `${years} года ` : ""}${months ? `${months} месяца` : ""}`;
 };

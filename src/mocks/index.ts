@@ -13,6 +13,14 @@ const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+export const SPECIALIZATIONS: ISpecialization[] = Array.from(
+  new Set(
+    Array(getRandomInt(1, 240))
+      .fill("")
+      .map(() => getRandomInt(1, 20).toString())
+  )
+) as ISpecialization[];
+
 export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
   .fill({} as ISpecialist)
   .map((_, idx) => ({
@@ -20,7 +28,10 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     firstName: "firstName",
     lastName: "lastName",
     patronymic: "patronymic",
-    yearsOfWorkExpirience: dayjs().toString(),
+    yearsOfWorkExpirience: {
+      years: getRandomInt(0, 50),
+      months: getRandomInt(0, 11),
+    },
     workDuration: "2024", // string iso ?
     comments: Array(getRandomInt(0, 20))
       .fill({} as IComment)
@@ -31,13 +42,7 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
         value: "comment",
         photoUrl: photoUrl(idx + 1),
       })),
-    specializations: Array.from(
-      new Set(
-        Array(getRandomInt(1, 240))
-          .fill("")
-          .map(() => getRandomInt(1, 20).toString())
-      )
-    ) as ISpecialization[],
+    specializations: SPECIALIZATIONS,
     pricing: {
       value: "1000",
       currency: "RUB" as ICurrency,
