@@ -32,7 +32,10 @@ export const AddFilterButton: FC<IAddFilterButtonProps> = ({
   const canShowAddFilterButton =
     (!filterValues.length ||
       filterValues.some(({ value }) => value !== undefined)) &&
-    filterValues.length !== Object.keys(FilterKeyToLabelMap).length &&
+    filterValues.length !==
+      Object.keys(FilterKeyToLabelMap).filter(
+        (key) => !forbiddenFilters?.includes(key as keyof IAllowedFilters)
+      ).length &&
     forbiddenFilters?.length !== Object.keys(FilterKeyToLabelMap).length;
 
   const prepareFilter = (key: keyof IAllowedFilters) => {

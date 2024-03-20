@@ -26,9 +26,12 @@ export const Sort: FC<ISortProps> = ({
       : value) ?? [];
 
   const canShowAddSortButton = value
-    ? value.length < Object.keys(SortKeyToLabelMap).length &&
-      forbiddenSortBy?.length !== Object.entries(SortKeyToLabelMap).length
-    : forbiddenSortBy?.length !== Object.entries(SortKeyToLabelMap).length;
+    ? value.length <
+        Object.keys(SortKeyToLabelMap).filter(
+          (key) => !forbiddenSortBy?.includes(key as ISortBy)
+        ).length &&
+      forbiddenSortBy?.length !== Object.keys(SortKeyToLabelMap).length
+    : forbiddenSortBy?.length !== Object.keys(SortKeyToLabelMap).length;
 
   const [openSortBy, setOpenSortBy] = useState<ISortBy[]>([]);
 

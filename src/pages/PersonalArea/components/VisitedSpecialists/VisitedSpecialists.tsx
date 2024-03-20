@@ -68,6 +68,8 @@ export const VisitedSpecialists: FC = () => {
     setRegisterSpecialistId(undefined);
   };
 
+  if (!VISITED_SPECIALISTS.length) return null;
+
   return (
     <>
       <Collapse
@@ -82,8 +84,15 @@ export const VisitedSpecialists: FC = () => {
             ),
             children: (
               <Flex vertical>
-                {/* TODO: подумать как внедрить */}
-                {/* <Filters /> */}
+                <Filters
+                  filterKey="VisitedSpecialists"
+                  hideSort
+                  forbiddenFilters={[
+                    "nearestWorkTime",
+                    "rating",
+                    "yearsOfWorkExpirience",
+                  ]}
+                />
                 <List
                   itemLayout="horizontal"
                   style={{ cursor: "pointer" }}

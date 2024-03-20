@@ -5,30 +5,33 @@ import { useLocation } from "react-router-dom";
 import type { IFilterChanger } from "../types";
 import { FILTERS_KEY, INITAL_FILTER_STATE } from "./constants";
 
-export const useFilters = () => {
+export const useFilters = (filterKey?: string) => {
+  const key =
+    !!filterKey && filterKey.trim() !== ""
+      ? FILTERS_KEY + filterKey
+      : FILTERS_KEY;
+
   const location = useLocation();
   const prevLocation = usePrevious(location);
 
-  const storedValue = window.localStorage.getItem(
-    FILTERS_KEY + location.pathname
-  );
+  const storedValue = window.localStorage.getItem(key + location.pathname);
   const initialState = storedValue
     ? JSON.parse(storedValue)
     : INITAL_FILTER_STATE;
 
   const [state, setState] = useUrlStatePrams<IFilter>({
-    paramsName: FILTERS_KEY,
+    paramsName: key,
     initialState: initialState,
   });
 
   useEffect(() => {
     if (prevLocation! === location) {
       window.localStorage.setItem(
-        FILTERS_KEY + location.pathname,
+        key + location.pathname,
         JSON.stringify(state)
       );
     }
-  }, [location, prevLocation, state]);
+  }, [location, prevLocation, state, key]);
 
   const onSearchChange = (search: string) => {
     setState({ ...state, search: search.trim() === "" ? undefined : search });

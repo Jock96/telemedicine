@@ -19,6 +19,7 @@ export const Filters: FC<IFiltersProps> = ({
   hideSearch,
   hideFilters,
   hideSort,
+  filterKey
 }) => {
   const {
     search,
@@ -29,7 +30,7 @@ export const Filters: FC<IFiltersProps> = ({
     onFiltersChange,
     onSortChange,
     onDropFilters,
-  } = useFilters();
+  } = useFilters(filterKey);
 
   if (hideSort && hideSearch && hideFilters) return null;
 

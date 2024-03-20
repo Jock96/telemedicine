@@ -21,4 +21,5 @@ export interface IFiltersProps extends IForbiddenFilters, IForbiddenSortBy {
   hideSearch?: boolean;
   hideFilters?: boolean;
   hideSort?: boolean;
+  filterKey?: string;
 }
