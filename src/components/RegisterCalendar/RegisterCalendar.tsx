@@ -68,9 +68,11 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
     setDate(undefined);
   };
 
-  const [currentWorkDuration] = workDuration.filter(
-    ({ specialization }) => specialization === selectedSpecialization
-  );
+  const [currentWorkDuration] = selectedSpecialization
+    ? workDuration.filter(
+        ({ specialization }) => specialization === selectedSpecialization
+      )
+    : [undefined];
 
   const selectedDateSlots = date
     ? slots
@@ -88,8 +90,10 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
         .flat()
     : [];
 
-  const durationHours = currentWorkDuration.value.hours ?? 0
-  const durationMinutes = currentWorkDuration.value.minutes ?? 0
+  console.log("currentWorkDuration", currentWorkDuration);
+
+  const durationHours = currentWorkDuration?.value.hours ?? 0;
+  const durationMinutes = currentWorkDuration?.value.minutes ?? 0;
 
   // TODO: разделить на сегменты
 
