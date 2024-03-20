@@ -4,4 +4,4 @@ export { LayoutHeader } from "./LayoutHeader";
 export { Page } from "./Page";
 export { CommentModal } from "./CommentModal";
 export { RegisterCalendar } from "./RegisterCalendar";
-export { Filters } from "./Filters";
+export { Filters, useFilters } from "./Filters";

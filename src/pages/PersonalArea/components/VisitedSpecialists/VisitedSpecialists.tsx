@@ -21,6 +21,8 @@ import { getFullName } from "../../../../helpers";
 import { ISpecialist } from "../../../../entities";
 import { CommentModal, Filters, SpecialistCard } from "../../../../components";
 import { RegisterCalendar } from "../../../../components/RegisterCalendar/RegisterCalendar";
+import { visitedSpecialistsKey } from "./constants";
+import { useFilters } from "../../../../components";
 
 export const VisitedSpecialists: FC = () => {
   const [selectedSpecialistId, setSelectedSpecialistId] =
@@ -68,15 +70,18 @@ export const VisitedSpecialists: FC = () => {
     setRegisterSpecialistId(undefined);
   };
 
+  const { hasFilters } = useFilters(visitedSpecialistsKey);
+
   if (!VISITED_SPECIALISTS.length) return null;
 
   return (
     <>
       <Collapse
         ghost
+        activeKey={hasFilters ? visitedSpecialistsKey : undefined}
         items={[
           {
-            key: "1",
+            key: visitedSpecialistsKey,
             label: (
               <Typography.Text strong>
                 Специалисты которых вы посетили:
@@ -85,7 +90,7 @@ export const VisitedSpecialists: FC = () => {
             children: (
               <Flex vertical>
                 <Filters
-                  filterKey="VisitedSpecialists"
+                  filterKey={visitedSpecialistsKey}
                   hideSort
                   forbiddenFilters={[
                     "nearestWorkTime",
@@ -151,7 +156,9 @@ export const VisitedSpecialists: FC = () => {
                               <Flex wrap="wrap" gap={4}>
                                 {specialist.specializations.map(
                                   (specialization) => (
-                                    <Tag>{specialization}</Tag>
+                                    <Tag key={specialization}>
+                                      {specialization}
+                                    </Tag>
                                   )
                                 )}
                               </Flex>
@@ -162,7 +169,11 @@ export const VisitedSpecialists: FC = () => {
                       {!!registerSpecialistId &&
                         specialist.id === registerSpecialistId && (
                           <List.Item>
-                            <RegisterCalendar />
+                            <RegisterCalendar
+                              visiteDates={specialist.visiteDates}
+                              slots={specialist.slots}
+                              workDuration={specialist.workDuration}
+                            />
                           </List.Item>
                         )}
                     </>

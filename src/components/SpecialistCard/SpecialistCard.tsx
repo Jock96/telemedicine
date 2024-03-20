@@ -69,8 +69,8 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
             <Flex gap={4} wrap="wrap">
               {/* TODO: множественное число */}
               <Typography.Text>Специализации:</Typography.Text>
-              {specializations.map((specialization, index) => (
-                <Tag key={index}>{specialization}</Tag>
+              {specializations.map((specialization) => (
+                <Tag key={specialization}>{specialization}</Tag>
               ))}
             </Flex>
             <Flex gap={4}>

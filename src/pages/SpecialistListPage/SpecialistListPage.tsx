@@ -9,8 +9,8 @@ export const SpecialistListPage: FC = () => {
       <Flex vertical style={{ width: "100%" }} align="center" gap={24}>
         <Typography.Title level={1}>Список специалистов</Typography.Title>
         <Filters />
-        {SPECIALISTS_LIST.map((medik) => (
-          <SpecialistCard key={medik.id} {...medik} />
+        {SPECIALISTS_LIST.map((specialist) => (
+          <SpecialistCard key={specialist.id} {...specialist} />
         ))}
         <Pagination total={500} showSizeChanger={false} />
       </Flex>

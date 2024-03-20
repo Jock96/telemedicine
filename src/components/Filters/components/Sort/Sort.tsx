@@ -81,6 +81,7 @@ export const Sort: FC<ISortProps> = ({
     <Flex gap={4} wrap="wrap">
       {allowedSort.map(({ sortBy, direction }) => (
         <Dropdown
+          key={sortBy}
           open={openSortBy.includes(sortBy)}
           onOpenChange={() => handleOpenChange(sortBy)}
           trigger={["click"]}

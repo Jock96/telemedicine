@@ -3,6 +3,8 @@ import type { IComment } from "../entities";
 import type { IConsultation } from "../entities";
 import type { ICurrency } from "../entities";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc)
 
 export const photoUrl = (id: number) =>
   `https://api.dicebear.com/7.x/miniavs/svg?seed=${id}`;
@@ -32,7 +34,15 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
       years: getRandomInt(0, 50),
       months: getRandomInt(0, 11),
     },
-    workDuration: "2024", // string iso ?
+    workDuration: [
+      {
+        specialization: "1" as ISpecialization,
+        value: {
+          hours: 0,
+          minutes: 30,
+        },
+      },
+    ],
     comments: Array(getRandomInt(0, 20))
       .fill({} as IComment)
       .map(() => ({
@@ -52,35 +62,25 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     photoUrl: photoUrl(idx),
     workTime: {},
     nearestWorkTime: "2024", // string iso ?
+    visiteDates: Array(getRandomInt(0, 20))
+      .fill("")
+      .map(() =>
+        dayjs()
+          .add(getRandomInt(-7, 7), "day")
+          .add(getRandomInt(-24, 24), "hour")
+          .toString()
+      ),
     slots: [
       {
         date: dayjs().toString(),
         value: [
           {
-            from: dayjs()
-              .set("hour", 0)
-              .set("minute", 0)
-              .set("second", 0)
-              .toString(),
-            to: dayjs()
-              .set("hour", 0)
-              .set("minute", 0)
-              .set("second", 0)
-              .add(2, "hour")
-              .toString(),
+            from: dayjs().utcOffset(0).startOf("day").set("hour", 1).toString(),
+            to: dayjs().utcOffset(0).startOf("day").set("hour", 3).toString(),
           },
           {
-            from: dayjs()
-              .set("hour", 3)
-              .set("minute", 3)
-              .set("second", 3)
-              .toString(),
-            to: dayjs()
-              .set("hour", 3)
-              .set("minute", 3)
-              .set("second", 3)
-              .add(2, "hour")
-              .toString(),
+            from: dayjs().utcOffset(0).startOf("day").set("hour", 5).toString(),
+            to: dayjs().utcOffset(0).startOf("day").set("hour", 7).toString(),
           },
         ],
       },

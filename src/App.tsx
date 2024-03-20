@@ -23,6 +23,8 @@ import locale from 'antd/locale/ru_RU';
 
 //
 
+// АДАПТИВ!
+
 function App() {
   // TODO: каждой специализации свой цвет
   const specialist = false; // TODO: после авторизации проверять кто

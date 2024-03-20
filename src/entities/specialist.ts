@@ -4,10 +4,11 @@ import type { IPrice } from "./price";
 import type { ISpecialization } from "./specialization";
 import type { ISlot } from "./slot";
 import type { IYearsOfWorkExpirience } from "./yearsOfWorkExpirience";
+import type { IWorkDuration } from "./workDuration";
 
 export interface ISpecialist extends IUser {
     yearsOfWorkExpirience: IYearsOfWorkExpirience  // стаж работы - [количество лет, количество месяцев] [0 | 50, 0 | 11]
-    workDuration: string; // длительность консультации - iso
+    workDuration: IWorkDuration[]; // длительность консультации - iso
     comments: IComment[]; // комменты
     specializations: ISpecialization[]; // специализации
     workTime: {
@@ -16,5 +17,6 @@ export interface ISpecialist extends IUser {
     pricing: IPrice // цена за прием - надо сделать зависимость от специализации
     nearestWorkTime: string; // ближайшее время записи - iso
     slots: ISlot[]; // свободные слоты
+    visiteDates: string[]; // даты посещений (прошедшие и предстоящие)
     // TODO: (nice to have) больницы в которых работает и часы работы в ней - для докторов
 }

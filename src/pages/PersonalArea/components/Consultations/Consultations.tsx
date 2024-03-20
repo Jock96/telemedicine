@@ -7,10 +7,13 @@ import {
 } from "./constants";
 import { CONSULTATIONS } from "../../../../mocks/index";
 import "./Consultations.css";
-import dayjs from "dayjs";
 import type { IConsultation } from "../../../../entities";
 import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants";
 import { Filters, SpecialistCard } from "../../../../components";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const Consultations: FC = () => {
   const specialist = false; // TODO: после авторизации проверять кто и менять вью (надо ли ?)
@@ -71,11 +74,13 @@ export const Consultations: FC = () => {
   const validRange: [dayjs.Dayjs, dayjs.Dayjs] = [
     nearestConsultationTime
       .clone()
+      .utcOffset(0)
       .set("hour", 0)
       .set("minute", 0)
       .set("second", 0),
     latestConsultationTime
       .clone()
+      .utcOffset(0)
       .set("hour", 23)
       .set("minute", 59)
       .set("second", 59),
