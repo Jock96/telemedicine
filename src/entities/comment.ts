@@ -1,8 +1,9 @@
+import type { IntRange } from "./common";
 import type { Id } from "./id";
 
 export interface IComment extends Id {
     fromWho: string;
-    rating: number; // max 5
+    rating: IntRange<0, 6>;
     value: string;
     photoUrl: string;
 }

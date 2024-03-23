@@ -1,10 +1,10 @@
-import type { ISpecialist, ISpecialization } from "../entities";
+import type { IntRange, ISpecialist, ISpecialization } from "../entities";
 import type { IComment } from "../entities";
 import type { IConsultation } from "../entities";
 import type { ICurrency } from "../entities";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-dayjs.extend(utc)
+dayjs.extend(utc);
 
 export const photoUrl = (id: number) =>
   `https://api.dicebear.com/7.x/miniavs/svg?seed=${id}`;
@@ -31,8 +31,8 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     lastName: "lastName",
     patronymic: "patronymic",
     yearsOfWorkExpirience: {
-      years: getRandomInt(0, 50),
-      months: getRandomInt(0, 11),
+      years: getRandomInt(0, 50) as IntRange<0, 51>,
+      months: getRandomInt(0, 11) as IntRange<0, 12>,
     },
     workDuration: [
       {
@@ -48,7 +48,7 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
       .map(() => ({
         id: idx.toString(),
         fromWho: "fromWho",
-        rating: getRandomInt(0, getRandomInt(1, 5)),
+        rating: getRandomInt(0, getRandomInt(1, 5)) as IntRange<0, 6>,
         value: "comment",
         photoUrl: photoUrl(idx + 1),
       })),

@@ -1,3 +1,4 @@
+import { IComment } from "./comment";
 import type { ISorter } from "./sorter";
 import type { ISpecialist } from "./specialist";
 import type { ISpecialization } from "./specialization";
@@ -18,7 +19,7 @@ export interface IFilter {
   };
   rating?: {
     filterType: IFilterType;
-    value: number | [number, number];
+    value: IComment["rating"] | [IComment["rating"], IComment["rating"]];
   };
   nearestWorkTime?: {
     filterType: IFilterType;

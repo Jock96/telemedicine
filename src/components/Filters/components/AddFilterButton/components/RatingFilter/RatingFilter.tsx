@@ -4,6 +4,7 @@ import { IFilterType } from "../../../../../../entities";
 import { MAX_RANGE, MIN_RANGE } from "./constants";
 import { DefaultFilter } from "../DefaultFilter";
 import type { ISpecificFilter } from "../FilterSwitch";
+import type { IntRange } from "../../../../../../entities";
 
 export const RatingFilter: FC<ISpecificFilter<"rating">> = ({
   data,
@@ -58,8 +59,8 @@ export const RatingFilter: FC<ISpecificFilter<"rating">> = ({
     onChange({
       value:
         filterType === "range"
-          ? (rangeValue as [number, number])
-          : (simpleValue as number),
+          ? (rangeValue as [IntRange<0, 6>, IntRange<0, 6>])
+          : (simpleValue as IntRange<0, 6>),
       filterType,
     });
   };

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import {
   Calendar,
   Modal,
@@ -10,16 +10,18 @@ import {
   Dropdown,
   Button,
   DropdownProps,
+  TimePicker,
 } from "antd";
 import { SelectInfo } from "antd/es/calendar/generateCalendar";
 import { DATE_FORMAT, TIME_FORMAT } from "../../constants";
 import "./RegisterCalendar.css";
 import type { IRegisterCalendarProps } from "./types";
-import { TIME_SELECT_TYPE } from "./constants";
+import { HOURS, MINUTES, TIME_SELECT_TYPE } from "./constants";
 import type { RadioChangeEvent } from "antd/es/radio";
 import type { ISpecialization } from "../../entities";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { generateSegmentLabel, generateSegments } from "./helpers";
 
 dayjs.extend(utc);
 
@@ -74,28 +76,86 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
       )
     : [undefined];
 
-  const selectedDateSlots = date
-    ? slots
-        .filter(
-          ({ date: slotDate }) =>
-            dayjs(slotDate).startOf("day").unix() ===
-            dayjs(date).clone().startOf("day").unix()
-        )
-        .map(({ value }) =>
-          value.map(({ from, to }) => ({
-            from: dayjs(from, TIME_FORMAT),
-            to: dayjs(to, TIME_FORMAT),
-          }))
-        )
-        .flat()
-    : [];
-
-  console.log("currentWorkDuration", currentWorkDuration);
+  const selectedDateSlots = useMemo(
+    () =>
+      date
+        ? slots
+            .filter(
+              ({ date: slotDate }) =>
+                dayjs(slotDate).startOf("day").unix() ===
+                dayjs(date).clone().startOf("day").unix()
+            )
+            .map(({ value }) =>
+              value.map(({ from, to }) => ({
+                from: dayjs(from),
+                to: dayjs(to),
+              }))
+            )
+            .flat()
+        : [],
+    [date, slots]
+  );
 
   const durationHours = currentWorkDuration?.value.hours ?? 0;
   const durationMinutes = currentWorkDuration?.value.minutes ?? 0;
 
-  // TODO: разделить на сегменты
+  const segments = useMemo(
+    () =>
+      generateSegments({ durationHours, durationMinutes, selectedDateSlots }),
+    [durationHours, durationMinutes, selectedDateSlots]
+  );
+
+  const availableStartHours = Array.from(
+    new Set(
+      selectedDateSlots
+        .map(({ from, to }) => {
+          const fromHour = from.get("hours");
+          const toHour = to.get("hours");
+
+          const hours = [];
+
+          for (let hour = fromHour; hour + durationHours < toHour; hour++) {
+            hours.push(hour);
+          }
+
+          return hours;
+        })
+        .flat()
+    )
+  );
+
+  const onApplyTime = ([start, end]: [
+    dayjs.Dayjs | null,
+    dayjs.Dayjs | null
+  ]) => {
+    // TODO:
+    handleCancel();
+  };
+
+  const [startTime, setStartTime] = useState<dayjs.Dayjs>();
+  const [endTime, setEndTime] = useState<dayjs.Dayjs>();
+
+  const handleTimeConfirm = ([start, end]: [
+    dayjs.Dayjs | null,
+    dayjs.Dayjs | null
+  ]) => {
+    if (!!start && !!startTime && startTime.unix() !== start.unix()) {
+      setStartTime(start);
+      setEndTime(undefined);
+      return;
+    }
+
+    if (end) {
+      setStartTime(undefined);
+      setEndTime(undefined);
+      onApplyTime([start, end]);
+      return;
+    }
+
+    if (start) {
+      setStartTime(start);
+    }
+  };
 
   return (
     <Card>
@@ -142,32 +202,100 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
         title={`Выбрать время записи на ${date?.format(DATE_FORMAT)}`}
       >
         <Flex vertical gap={8}>
-          <Dropdown menu={menu}>
+          <Dropdown menu={menu} trigger={["click"]}>
             <Button>
               {selectedSpecialization
                 ? `Выбранная специалиазция: ${selectedSpecialization}`
                 : "Выберите специализацию"}
             </Button>
           </Dropdown>
-          <Radio.Group
-            onChange={handleChange}
-            value={timeSelectType}
-            defaultValue={TIME_SELECT_TYPE.RECOMEND}
-            style={{ display: "flex" }}
-          >
-            <Radio.Button
-              style={{ flex: 1, display: "flex", justifyContent: "center" }}
-              value={TIME_SELECT_TYPE.RECOMEND}
-            >
-              Рекомендуемое
-            </Radio.Button>
-            <Radio.Button
-              style={{ flex: 1, display: "flex", justifyContent: "center" }}
-              value={TIME_SELECT_TYPE.SELF}
-            >
-              Самостоятельно
-            </Radio.Button>
-          </Radio.Group>
+          {selectedSpecialization ? (
+            !segments.length ? (
+              <Typography.Text style={{ textAlign: "center" }} type="danger">
+                По выбранной специализации на указанную дату нет доступных
+                записей
+              </Typography.Text>
+            ) : (
+              <Radio.Group
+                onChange={handleChange}
+                value={timeSelectType}
+                defaultValue={TIME_SELECT_TYPE.RECOMEND}
+                style={{ display: "flex" }}
+              >
+                <Radio.Button
+                  style={{ flex: 1, display: "flex", justifyContent: "center" }}
+                  value={TIME_SELECT_TYPE.RECOMEND}
+                >
+                  Рекомендуемое
+                </Radio.Button>
+                <Radio.Button
+                  style={{ flex: 1, display: "flex", justifyContent: "center" }}
+                  value={TIME_SELECT_TYPE.SELF}
+                >
+                  Самостоятельно
+                </Radio.Button>
+              </Radio.Group>
+            )
+          ) : null}
+          {timeSelectType === TIME_SELECT_TYPE.RECOMEND &&
+            !!segments.length && (
+              <Flex wrap="wrap" gap={8} justify="center">
+                {segments.map((segment) => (
+                  <Button
+                    key={segment.start.toString()}
+                    type="dashed"
+                    onClick={() => onApplyTime([segment.start, segment.end])}
+                  >
+                    {generateSegmentLabel(segment)}
+                  </Button>
+                ))}
+              </Flex>
+            )}
+          {timeSelectType === TIME_SELECT_TYPE.SELF && !!segments.length && (
+            <TimePicker.RangePicker
+              value={[startTime, endTime]}
+              placeholder={["С", "по"]}
+              format={TIME_FORMAT}
+              onOk={handleTimeConfirm}
+              disabledTime={(_, range) => ({
+                disabledHours: () =>
+                  range === "start"
+                    ? HOURS.filter(
+                        (hour) => !availableStartHours.includes(hour)
+                      )
+                    : !startTime ||
+                      MINUTES.filter(
+                        (minute) =>
+                          minute !==
+                          (startTime.get("minutes") + durationMinutes >= 60
+                            ? 60 - (startTime.get("minutes") + durationMinutes)
+                            : startTime.get("minutes") + durationMinutes)
+                      ).length === MINUTES.length
+                    ? HOURS
+                    : HOURS.filter(
+                        (hour) =>
+                          hour !==
+                          startTime.get("hours") +
+                            durationHours +
+                            (startTime.get("minutes") + durationMinutes >= 60
+                              ? 1
+                              : 0)
+                      ),
+                disabledMinutes: () =>
+                  range === "start"
+                    ? []
+                    : !startTime
+                    ? MINUTES
+                    : MINUTES.filter(
+                        (minute) =>
+                          minute !==
+                          (startTime.get("minutes") + durationMinutes >= 60
+                            ? 60 - (startTime.get("minutes") + durationMinutes)
+                            : startTime.get("minutes") + durationMinutes)
+                      ),
+              })}
+            />
+          )}
         </Flex>
       </Modal>
     </Card>

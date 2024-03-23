@@ -1,4 +1,6 @@
+import type { IntRange } from "./common";
+
 export interface IYearsOfWorkExpirience {
-  years?: number; // max 50
-  months?: number; // max 11
+  years?: IntRange<0, 51>; // max 50
+  months?: IntRange<0, 12>; // max 11
 }
