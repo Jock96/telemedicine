@@ -12,10 +12,12 @@ import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants";
 import { Filters, SpecialistCard } from "../../../../components";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { useMediaContext } from "../../../../contextes";
 
 dayjs.extend(utc);
 
 export const Consultations: FC = () => {
+  const { isMobile } = useMediaContext();
   const specialist = false; // TODO: после авторизации проверять кто и менять вью (надо ли ?)
 
   const onDeleteConsultation = (id: IConsultation["id"]) => {
@@ -114,23 +116,26 @@ export const Consultations: FC = () => {
       {isCalendar ? (
         <>
           <Calendar
+            fullscreen={!isMobile}
             className="consultationsCalendar"
             validRange={validRange}
             cellRender={(date) =>
-              CONSULTATIONS.filter(
-                ({ time }) =>
-                  date.date() === dayjs(time).date() &&
-                  date.month() === dayjs(time).month()
-              ).map(({ id, time }) => (
-                <Flex key={id} vertical gap={2}>
-                  <Flex gap={2}>
-                    <Badge color="green" />
-                    <Typography.Text ellipsis>
-                      {dayjs(time).format(TIME_FORMAT)}
-                    </Typography.Text>
-                  </Flex>
-                </Flex>
-              ))
+              !isMobile
+                ? CONSULTATIONS.filter(
+                    ({ time }) =>
+                      date.date() === dayjs(time).date() &&
+                      date.month() === dayjs(time).month()
+                  ).map(({ id, time }) => (
+                    <Flex key={id} vertical gap={2}>
+                      <Flex gap={2}>
+                        <Badge color="green" />
+                        <Typography.Text ellipsis>
+                          {dayjs(time).format(TIME_FORMAT)}
+                        </Typography.Text>
+                      </Flex>
+                    </Flex>
+                  ))
+                : null
             }
             onSelect={handleSelect}
             disabledDate={(date) =>
@@ -167,6 +172,7 @@ export const Consultations: FC = () => {
       ) : (
         <>
           <Filters
+            wrapInCard={!isMobile}
             hideSort
             forbiddenFilters={["yearsOfWorkExpirience", "rating"]}
           />

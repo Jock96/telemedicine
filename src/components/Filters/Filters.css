@@ -1,0 +1,10 @@
+.filtersMobileContainer {
+  & .ant-collapse-content {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  & .ant-collapse-header {
+    align-items: center !important;
+  }
+}

@@ -17,6 +17,7 @@ import "./SpecialistCard.css";
 import { Routes } from "../../constants";
 import { getFullName } from "../../helpers";
 import { getYearsOfWorkExpirience } from "../../helpers/getYearsOfWorkExpirience";
+import { useMediaContext } from "../../contextes";
 
 export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
   id,
@@ -30,6 +31,7 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
   nearestWorkTime,
   showLess,
 }) => {
+  const { isMobile } = useMediaContext();
   const collapseRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
@@ -49,16 +51,25 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
       style={{ width: "100%", cursor: "pointer", border: "none" }}
     >
       <Flex vertical style={{ width: "100%" }}>
-        <Flex align="flex-start" style={{ width: "100%" }}>
-          <Image src={photoUrl} preview={false} style={{ width: "300px" }} />
-          <Flex
-            vertical
-            gap={12}
-            justify="flex-start"
-            style={{ height: "100%" }}
-          >
-            <Typography.Text strong>{fullName}</Typography.Text>
-            <Flex align="center" gap={8}>
+        <Flex
+          align={isMobile ? "center" : "flex-start"}
+          style={{ width: "100%" }}
+          vertical={isMobile}
+          gap={8}
+        >
+          {isMobile && <Typography.Text strong>{fullName}</Typography.Text>}
+          <Image
+            src={photoUrl}
+            preview={false}
+            style={{ width: isMobile ? "200px" : "300px" }}
+          />
+          <Flex vertical gap={12} style={{ height: "100%" }}>
+            {!isMobile && <Typography.Text strong>{fullName}</Typography.Text>}
+            <Flex
+              align="center"
+              gap={8}
+              style={isMobile ? { alignSelf: "center" } : undefined}
+            >
               <Rate
                 disabled
                 defaultValue={Number(rating.toFixed(2))}
@@ -75,7 +86,9 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
             </Flex>
             <Flex gap={4}>
               <Typography.Text>Стаж работы:</Typography.Text>
-              <Typography.Text>{getYearsOfWorkExpirience(yearsOfWorkExpirience)}</Typography.Text>
+              <Typography.Text>
+                {getYearsOfWorkExpirience(yearsOfWorkExpirience)}
+              </Typography.Text>
             </Flex>
             {!showLess && (
               <Flex gap={4}>

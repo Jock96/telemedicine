@@ -1,6 +1,5 @@
 import { FC } from "react";
 import {
-  Card,
   Typography,
   Collapse,
   Flex,
@@ -12,6 +11,9 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { AddFilterButton, Search, Sort } from "./components";
 import { FILTERS_KEY, INITAL_FILTER_STATE, useFilters } from "./hooks";
 import { IFiltersProps } from "./types";
+import { useMediaContext } from "../../contextes";
+import "./Filters.css";
+import { CardWrapper } from "../CardWrapper";
 
 export const Filters: FC<IFiltersProps> = ({
   forbiddenFilters,
@@ -19,7 +21,8 @@ export const Filters: FC<IFiltersProps> = ({
   hideSearch,
   hideFilters,
   hideSort,
-  filterKey
+  filterKey,
+  wrapInCard = true,
 }) => {
   const {
     search,
@@ -32,12 +35,15 @@ export const Filters: FC<IFiltersProps> = ({
     onDropFilters,
   } = useFilters(filterKey);
 
+  const { isMobile } = useMediaContext();
+
   if (hideSort && hideSearch && hideFilters) return null;
 
   return (
-    <Card style={{ width: "100%" }}>
+    <CardWrapper wrap={wrapInCard} style={{ width: "100%" }}>
       <Collapse
         ghost
+        className={isMobile ? "filtersMobileContainer" : undefined}
         activeKey={
           JSON.stringify({ search, ...filters }) ===
           JSON.stringify(INITAL_FILTER_STATE)
@@ -50,7 +56,12 @@ export const Filters: FC<IFiltersProps> = ({
             label: <Typography.Text strong>Фильтры</Typography.Text>,
             extra: hasFilters && (
               <Tooltip title="Сбросить">
-                <Button danger type="text" icon={<DeleteOutlined />} onClick={onDropFilters} />
+                <Button
+                  danger
+                  type="text"
+                  icon={<DeleteOutlined />}
+                  onClick={onDropFilters}
+                />
               </Tooltip>
             ),
             children: (
@@ -80,6 +91,6 @@ export const Filters: FC<IFiltersProps> = ({
           },
         ]}
       />
-    </Card>
+    </CardWrapper>
   );
 };

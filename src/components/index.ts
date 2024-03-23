@@ -5,3 +5,4 @@ export { Page } from "./Page";
 export { CommentModal } from "./CommentModal";
 export { RegisterCalendar } from "./RegisterCalendar";
 export { Filters, useFilters } from "./Filters";
+export { CardWrapper } from "./CardWrapper";

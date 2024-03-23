@@ -5,6 +5,7 @@ import { useToken } from "antd/es/theme/internal";
 import { generateLabel } from "../../helpers";
 import { NumericFilterHeader } from "../NumericFilterHeader";
 import type { IDefaultFilterProps } from "./types";
+import { useMediaContext } from "../../../../../../contextes";
 
 export const DefaultFilter: FC<IDefaultFilterProps> = ({
   filterKey,
@@ -16,6 +17,8 @@ export const DefaultFilter: FC<IDefaultFilterProps> = ({
   onApply,
   onClose,
 }) => {
+  const { isMobile } = useMediaContext();
+
   const [, token] = useToken();
   const [open, setOpen] = useState(!data);
 
@@ -41,6 +44,7 @@ export const DefaultFilter: FC<IDefaultFilterProps> = ({
     <Dropdown
       trigger={["click"]}
       open={open}
+      placement={isMobile ? "bottomCenter" : undefined}
       onOpenChange={handleOpenChange}
       dropdownRender={() => (
         <Flex
@@ -61,7 +65,22 @@ export const DefaultFilter: FC<IDefaultFilterProps> = ({
         </Flex>
       )}
     >
-      <Button type="dashed" icon={<CloseCircleOutlined onClick={handleClose} />}>
+      <Button
+        type="dashed"
+        style={
+          isMobile
+            ? {
+                height: "100%",
+                wordBreak: "break-word",
+                whiteSpace: "normal",
+                display: "flex",
+                alignItems: "baseline",
+                textAlign: "start",
+              }
+            : undefined
+        }
+        icon={<CloseCircleOutlined onClick={handleClose} />}
+      >
         {generateLabel({ key: filterKey, data, type })}
       </Button>
     </Dropdown>

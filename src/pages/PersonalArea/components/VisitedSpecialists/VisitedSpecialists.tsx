@@ -23,8 +23,11 @@ import { CommentModal, Filters, SpecialistCard } from "../../../../components";
 import { RegisterCalendar } from "../../../../components/RegisterCalendar/RegisterCalendar";
 import { visitedSpecialistsKey } from "./constants";
 import { useFilters } from "../../../../components";
+import { useMediaContext } from "../../../../contextes";
 
 export const VisitedSpecialists: FC = () => {
+  const { isMobile } = useMediaContext();
+
   const [selectedSpecialistId, setSelectedSpecialistId] =
     useState<ISpecialist["id"]>();
 
@@ -78,7 +81,7 @@ export const VisitedSpecialists: FC = () => {
     <>
       <Collapse
         ghost
-        activeKey={hasFilters ? visitedSpecialistsKey : undefined}
+        defaultActiveKey={hasFilters ? visitedSpecialistsKey : undefined}
         items={[
           {
             key: visitedSpecialistsKey,
@@ -90,6 +93,7 @@ export const VisitedSpecialists: FC = () => {
             children: (
               <Flex vertical>
                 <Filters
+                  wrapInCard={!isMobile}
                   filterKey={visitedSpecialistsKey}
                   hideSort
                   forbiddenFilters={[
@@ -105,6 +109,11 @@ export const VisitedSpecialists: FC = () => {
                   renderItem={(specialist) => (
                     <>
                       <List.Item
+                        style={
+                          isMobile
+                            ? { justifyContent: "center", gap: 8 }
+                            : undefined
+                        }
                         extra={
                           <Flex>
                             {!!registerSpecialistId &&
@@ -170,6 +179,7 @@ export const VisitedSpecialists: FC = () => {
                         specialist.id === registerSpecialistId && (
                           <List.Item>
                             <RegisterCalendar
+                              wrapInCard={!isMobile}
                               visiteDates={specialist.visiteDates}
                               slots={specialist.slots}
                               workDuration={specialist.workDuration}

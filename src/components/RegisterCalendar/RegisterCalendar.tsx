@@ -2,7 +2,6 @@ import { FC, useMemo, useState } from "react";
 import {
   Calendar,
   Modal,
-  Card,
   Typography,
   Flex,
   Badge,
@@ -22,6 +21,8 @@ import type { ISpecialization } from "../../entities";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { generateSegmentLabel, generateSegments } from "./helpers";
+import { useMediaContext } from "../../contextes";
+import { CardWrapper } from "../CardWrapper";
 
 dayjs.extend(utc);
 
@@ -29,7 +30,10 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
   visiteDates,
   slots,
   workDuration,
+  wrapInCard = true,
 }) => {
+  const { isMobile } = useMediaContext();
+
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<dayjs.Dayjs>();
 
@@ -158,11 +162,12 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
   };
 
   return (
-    <Card>
+    <CardWrapper wrap={wrapInCard}>
       <Typography.Title level={5} style={{ textAlign: "center" }}>
         Запись к специалисту
       </Typography.Title>
       <Calendar
+        fullscreen={!isMobile}
         validRange={[
           dayjs().utcOffset(0).startOf("day"),
           dayjs()
@@ -174,22 +179,24 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
         ]}
         onSelect={handleSelect}
         cellRender={(date) =>
-          visiteDates
-            .filter(
-              (visiteDate) =>
-                date.date() === dayjs(visiteDate).date() &&
-                date.month() === dayjs(visiteDate).month()
-            )
-            .map((visiteDate) => (
-              <Flex key={visiteDate} vertical gap={2}>
-                <Flex gap={2}>
-                  <Badge color="green" />
-                  <Typography.Text ellipsis>
-                    {dayjs(visiteDate).format(TIME_FORMAT)}
-                  </Typography.Text>
-                </Flex>
-              </Flex>
-            ))
+          !isMobile
+            ? visiteDates
+                .filter(
+                  (visiteDate) =>
+                    date.date() === dayjs(visiteDate).date() &&
+                    date.month() === dayjs(visiteDate).month()
+                )
+                .map((visiteDate) => (
+                  <Flex key={visiteDate} vertical gap={2}>
+                    <Flex gap={2}>
+                      <Badge color="green" />
+                      <Typography.Text ellipsis>
+                        {dayjs(visiteDate).format(TIME_FORMAT)}
+                      </Typography.Text>
+                    </Flex>
+                  </Flex>
+                ))
+            : null
         }
         className="specialistCalendar"
       />
@@ -197,7 +204,7 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
         open={open}
         centered
         onCancel={handleCancel}
-        width="75%"
+        width={isMobile ? "100%" : "75%"}
         footer={null}
         title={`Выбрать время записи на ${date?.format(DATE_FORMAT)}`}
       >
@@ -298,6 +305,6 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
           )}
         </Flex>
       </Modal>
-    </Card>
+    </CardWrapper>
   );
 };

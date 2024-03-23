@@ -9,11 +9,13 @@ import { generateSpecializationsLabel } from "../../helpers";
 import "./SpecializationsFilter.css";
 import { TooltipWrapper } from "../../../../../TooltipWrapper";
 import { LABEL_OFFSET } from "./constants";
+import { useMediaContext } from "../../../../../../contextes";
 
 export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
   data,
   onChange,
 }) => {
+  const { isMobile } = useMediaContext();
   const [open, setOpen] = useState(!data);
 
   const handleOpenChange = (open: boolean) => {
@@ -74,6 +76,18 @@ export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
         type="dashed"
         icon={<CloseCircleOutlined onClick={handleClose} />}
         onClick={toggleView}
+        style={
+          isMobile
+            ? {
+                height: "100%",
+                wordBreak: "break-word",
+                whiteSpace: "normal",
+                display: "flex",
+                alignItems: "baseline",
+                textAlign: "start",
+              }
+            : undefined
+        }
       >
         {label}
       </Button>

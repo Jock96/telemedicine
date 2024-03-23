@@ -22,4 +22,5 @@ export interface IFiltersProps extends IForbiddenFilters, IForbiddenSortBy {
   hideFilters?: boolean;
   hideSort?: boolean;
   filterKey?: string;
+  wrapInCard?: boolean
 }
