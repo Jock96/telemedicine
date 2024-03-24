@@ -1,38 +1,20 @@
 import { FC, useState } from "react";
-import { Calendar, Table, Switch, Flex, Typography, Badge, Modal } from "antd";
+import { Calendar, Switch, Flex, Typography, Badge, Modal } from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
-import {
-  generateColumns,
-  PersonalAreaConsultationIsCalendarKey,
-} from "./constants";
+import { PersonalAreaConsultationIsCalendarKey } from "./constants";
 import { CONSULTATIONS } from "../../../../mocks/index";
 import "./Consultations.css";
-import type { IConsultation } from "../../../../entities";
 import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants";
-import { Filters, SpecialistCard } from "../../../../components";
+import { Filters } from "../../../../components";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useMediaContext } from "../../../../contextes";
+import { ConsultationsList } from "./components";
 
 dayjs.extend(utc);
 
 export const Consultations: FC = () => {
   const { isMobile } = useMediaContext();
-  const specialist = false; // TODO: после авторизации проверять кто и менять вью (надо ли ?)
-
-  const onDeleteConsultation = (id: IConsultation["id"]) => {
-    // TODO:
-  };
-
-  const onChangeConsultationDate = (id: IConsultation["id"]) => {
-    // TODO:
-  };
-
-  const columns = generateColumns({
-    specialist,
-    onDeleteConsultation,
-    onChangeConsultationDate,
-  });
 
   const isCalendarFromLocalStorage = window.localStorage.getItem(
     PersonalAreaConsultationIsCalendarKey
@@ -88,28 +70,13 @@ export const Consultations: FC = () => {
       .set("second", 59),
   ];
 
-  const [selectedConsultationId, setSelectedConsultationId] =
-    useState<IConsultation["id"]>();
-
-  const showUserInfo = (id: IConsultation["id"]) => {
-    setSelectedConsultationId(id);
-  };
-
-  const closeUserInfo = () => {
-    setSelectedConsultationId(undefined);
-  };
-
-  const selectedSpecialist = CONSULTATIONS.find(
-    ({ id }) => id === selectedConsultationId
-  )?.specialist;
-
   return (
     <Flex vertical gap={12}>
       <Typography.Text strong>Предстоящие консультации:</Typography.Text>
       <Switch
         checked={isCalendar}
         checkedChildren="Календарь"
-        unCheckedChildren="Таблица"
+        unCheckedChildren="Список"
         onChange={toggleView}
         style={{ width: "fit-content" }}
       />
@@ -154,18 +121,10 @@ export const Consultations: FC = () => {
             footer={null}
             title={`Записи на ${date?.format(DATE_FORMAT)}`}
           >
-            <Table
-              style={{ cursor: "pointer" }}
-              columns={columns}
-              // TODO:
-              loading={false}
-              // TODO:
-              dataSource={CONSULTATIONS.filter(
+            <ConsultationsList
+              data={CONSULTATIONS.filter(
                 ({ time }) => date?.date() === dayjs(time).date()
               )}
-              onRow={({ id }) => ({
-                onClick: () => showUserInfo(id),
-              })}
             />
           </Modal>
         </>
@@ -173,31 +132,16 @@ export const Consultations: FC = () => {
         <>
           <Filters
             wrapInCard={!isMobile}
-            hideSort
+            hideSort={!isMobile}
+            forbiddenSortBy={[
+              "rating",
+              "workDuration",
+              "yearsOfWorkExpirience",
+            ]}
             forbiddenFilters={["yearsOfWorkExpirience", "rating"]}
           />
-          <Table
-            style={{ cursor: "pointer" }}
-            onRow={({ id }) => ({
-              onClick: () => showUserInfo(id),
-            })}
-            columns={columns}
-            // TODO:
-            loading={false}
-            // TODO:
-            dataSource={CONSULTATIONS}
-          />
+          <ConsultationsList data={CONSULTATIONS} />
         </>
-      )}
-      {selectedSpecialist && (
-        <Modal
-          open={!!selectedConsultationId}
-          centered
-          onCancel={closeUserInfo}
-          footer={null}
-        >
-          <SpecialistCard {...selectedSpecialist} showLess />
-        </Modal>
       )}
     </Flex>
   );

@@ -14,6 +14,7 @@ export const SpecialistListPage: FC = () => {
         {SPECIALISTS_LIST.map((specialist) => (
           <SpecialistCard key={specialist.id} {...specialist} />
         ))}
+        {/* TODO: */}
         <Pagination
           size={isMobile ? "small" : undefined}
           total={500}

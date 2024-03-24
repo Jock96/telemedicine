@@ -115,43 +115,48 @@ export const VisitedSpecialists: FC = () => {
                             : undefined
                         }
                         extra={
-                          <Flex>
-                            {!!registerSpecialistId &&
-                            specialist.id === registerSpecialistId ? (
-                              <Tooltip title="Закрыть форму записи">
+                          !isMobile && (
+                            <Flex>
+                              {!!registerSpecialistId &&
+                              specialist.id === registerSpecialistId ? (
+                                <Tooltip title="Закрыть форму записи">
+                                  <Button
+                                    type="text"
+                                    icon={<StopOutlined />}
+                                    onClick={() => hideRegisterCalendar()}
+                                  />
+                                </Tooltip>
+                              ) : (
+                                <Tooltip title="Записаться повторно">
+                                  <Button
+                                    type="text"
+                                    icon={<HistoryOutlined />}
+                                    onClick={() =>
+                                      showRegisterCalendar(specialist.id)
+                                    }
+                                  />
+                                </Tooltip>
+                              )}
+                              {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
+                              <Tooltip title="Оставить комментарий">
                                 <Button
                                   type="text"
-                                  icon={<StopOutlined />}
-                                  onClick={() => hideRegisterCalendar()}
-                                />
-                              </Tooltip>
-                            ) : (
-                              <Tooltip title="Записаться повторно">
-                                <Button
-                                  type="text"
-                                  icon={<HistoryOutlined />}
+                                  icon={<EditOutlined />}
                                   onClick={() =>
-                                    showRegisterCalendar(specialist.id)
+                                    showCommentsModal(specialist.id)
                                   }
                                 />
                               </Tooltip>
-                            )}
-                            {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
-                            <Tooltip title="Оставить комментарий">
-                              <Button
-                                type="text"
-                                icon={<EditOutlined />}
-                                onClick={() => showCommentsModal(specialist.id)}
-                              />
-                            </Tooltip>
-                            <Tooltip title="Удалить из истории посещения">
-                              <Button
-                                type="text"
-                                icon={<CloseOutlined />}
-                                onClick={() => onDelete(specialist.id)}
-                              />
-                            </Tooltip>
-                          </Flex>
+                              <Tooltip title="Удалить из истории посещения">
+                                <Button
+                                  type="text"
+                                  danger
+                                  icon={<CloseOutlined />}
+                                  onClick={() => onDelete(specialist.id)}
+                                />
+                              </Tooltip>
+                            </Flex>
+                          )
                         }
                       >
                         <div
@@ -175,6 +180,52 @@ export const VisitedSpecialists: FC = () => {
                           />
                         </div>
                       </List.Item>
+                      {isMobile && (
+                        <List.Item>
+                          <Flex vertical gap={4}>
+                            {!!registerSpecialistId &&
+                            specialist.id === registerSpecialistId ? (
+                              <Button
+                                block
+                                type="dashed"
+                                icon={<StopOutlined />}
+                                onClick={() => hideRegisterCalendar()}
+                              >
+                                Закрыть форму записи
+                              </Button>
+                            ) : (
+                              <Button
+                                block
+                                type="dashed"
+                                icon={<HistoryOutlined />}
+                                onClick={() =>
+                                  showRegisterCalendar(specialist.id)
+                                }
+                              >
+                                Записаться повторно
+                              </Button>
+                            )}
+                            {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
+                            <Button
+                              block
+                              type="dashed"
+                              icon={<EditOutlined />}
+                              onClick={() => showCommentsModal(specialist.id)}
+                            >
+                              Оставить комментарий
+                            </Button>
+                            <Button
+                              block
+                              danger
+                              type="dashed"
+                              icon={<CloseOutlined />}
+                              onClick={() => onDelete(specialist.id)}
+                            >
+                              Удалить
+                            </Button>
+                          </Flex>
+                        </List.Item>
+                      )}
                       {!!registerSpecialistId &&
                         specialist.id === registerSpecialistId && (
                           <List.Item>

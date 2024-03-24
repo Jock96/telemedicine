@@ -1,13 +1,11 @@
 import { ColumnsType } from "antd/es/table";
-import type { IConsultation } from "../../../../entities";
 import { Avatar, Tag, Button, Tooltip } from "antd";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import { getFullName } from "../../../../helpers";
 import dayjs from "dayjs";
-import type { IColumnGenerator } from "./types";
-import { DATE_AND_TIME_FORMAT } from "../../../../constants";
-
-export const PersonalAreaConsultationIsCalendarKey = 'PersonalAreaConsultationIsCalendar';
+import type { IColumnGenerator } from "../../types";
+import type { IConsultation } from "../../../../../../entities";
+import { getFullName } from "../../../../../../helpers";
+import { DATE_AND_TIME_FORMAT } from "../../../../../../constants";
 
 // TODO: генерация разных колонок
 export const generateColumns = ({
@@ -71,6 +69,7 @@ export const generateColumns = ({
         <Button
           type="text"
           icon={<CloseOutlined />}
+          danger
           onClick={() => onDeleteConsultation(id)}
         />
       </Tooltip>
