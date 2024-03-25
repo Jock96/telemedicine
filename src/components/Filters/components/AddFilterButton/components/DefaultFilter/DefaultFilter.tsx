@@ -6,6 +6,7 @@ import { generateLabel } from "../../helpers";
 import { NumericFilterHeader } from "../NumericFilterHeader";
 import type { IDefaultFilterProps } from "./types";
 import { useMediaContext } from "../../../../../../contextes";
+import { AdaptiveButton } from "../../../../../AdaptiveButton";
 
 export const DefaultFilter: FC<IDefaultFilterProps> = ({
   filterKey,
@@ -65,24 +66,12 @@ export const DefaultFilter: FC<IDefaultFilterProps> = ({
         </Flex>
       )}
     >
-      <Button
+      <AdaptiveButton
         type="dashed"
-        style={
-          isMobile
-            ? {
-                height: "100%",
-                wordBreak: "break-word",
-                whiteSpace: "normal",
-                display: "flex",
-                alignItems: "baseline",
-                textAlign: "start",
-              }
-            : undefined
-        }
         icon={<CloseCircleOutlined onClick={handleClose} />}
       >
         {generateLabel({ key: filterKey, data, type })}
-      </Button>
+      </AdaptiveButton>
     </Dropdown>
   );
 };

@@ -19,6 +19,7 @@ export const SpecialistListPage: FC = () => {
           size={isMobile ? "small" : undefined}
           total={500}
           showSizeChanger={false}
+          style={{ display: "flex" }}
         />
       </Flex>
     </Page>

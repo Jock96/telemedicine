@@ -69,6 +69,7 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
               align="center"
               gap={8}
               style={isMobile ? { alignSelf: "center" } : undefined}
+              wrap="wrap"
             >
               <Rate
                 disabled
@@ -84,14 +85,14 @@ export const SpecialistCard: FC<ISpecialist & { showLess?: boolean }> = ({
                 <Tag key={specialization}>{specialization}</Tag>
               ))}
             </Flex>
-            <Flex gap={4}>
+            <Flex gap={4} wrap="wrap">
               <Typography.Text>Стаж работы:</Typography.Text>
               <Typography.Text>
                 {getYearsOfWorkExpirience(yearsOfWorkExpirience)}
               </Typography.Text>
             </Flex>
             {!showLess && (
-              <Flex gap={4}>
+              <Flex gap={4} wrap="wrap">
                 <Typography.Text>Ближайшая запись:</Typography.Text>
                 <Typography.Text>{nearestWorkTime}</Typography.Text>
               </Flex>

@@ -32,7 +32,7 @@ export const Page: FC<
           <FloatButton
             style={{
               left: GO_BACK_OFFSET,
-              top: GO_BACK_OFFSET + headerHeight,
+              top: 4 * GO_BACK_OFFSET + headerHeight,
             }}
             icon={<ArrowLeftOutlined />}
             onClick={goBack}

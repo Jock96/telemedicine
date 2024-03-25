@@ -69,12 +69,12 @@ export const ConsultationsList: FC<IConsultationsListProps> = ({ data }) => {
                     title={specialist ? getFullName(specialist) : null}
                     description={
                       <Flex vertical gap={8}>
-                        <Flex gap={4}>
+                        <Flex gap={4} wrap="wrap">
                           <Typography.Text>Специализация:</Typography.Text>
                           <Tag>{specialization}</Tag>
                         </Flex>
 
-                        <Flex gap={4}>
+                        <Flex gap={4} wrap="wrap">
                           <Typography.Text>Время записи:</Typography.Text>
                           <Typography.Text>
                             {time

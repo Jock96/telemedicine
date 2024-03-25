@@ -19,7 +19,12 @@ import {
 import { VISITED_SPECIALISTS } from "../../../../mocks";
 import { getFullName } from "../../../../helpers";
 import { ISpecialist } from "../../../../entities";
-import { CommentModal, Filters, SpecialistCard } from "../../../../components";
+import {
+  AdaptiveButton,
+  CommentModal,
+  Filters,
+  SpecialistCard,
+} from "../../../../components";
 import { RegisterCalendar } from "../../../../components/RegisterCalendar/RegisterCalendar";
 import { visitedSpecialistsKey } from "./constants";
 import { useFilters } from "../../../../components";
@@ -181,20 +186,20 @@ export const VisitedSpecialists: FC = () => {
                         </div>
                       </List.Item>
                       {isMobile && (
-                        <List.Item>
-                          <Flex vertical gap={4}>
+                        <List.Item style={{ justifyContent: "center" }}>
+                          <Flex vertical gap={4} style={{ width: "100%" }}>
                             {!!registerSpecialistId &&
                             specialist.id === registerSpecialistId ? (
-                              <Button
+                              <AdaptiveButton
                                 block
                                 type="dashed"
                                 icon={<StopOutlined />}
                                 onClick={() => hideRegisterCalendar()}
                               >
                                 Закрыть форму записи
-                              </Button>
+                              </AdaptiveButton>
                             ) : (
-                              <Button
+                              <AdaptiveButton
                                 block
                                 type="dashed"
                                 icon={<HistoryOutlined />}
@@ -203,18 +208,18 @@ export const VisitedSpecialists: FC = () => {
                                 }
                               >
                                 Записаться повторно
-                              </Button>
+                              </AdaptiveButton>
                             )}
                             {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
-                            <Button
+                            <AdaptiveButton
                               block
                               type="dashed"
                               icon={<EditOutlined />}
                               onClick={() => showCommentsModal(specialist.id)}
                             >
                               Оставить комментарий
-                            </Button>
-                            <Button
+                            </AdaptiveButton>
+                            <AdaptiveButton
                               block
                               danger
                               type="dashed"
@@ -222,7 +227,7 @@ export const VisitedSpecialists: FC = () => {
                               onClick={() => onDelete(specialist.id)}
                             >
                               Удалить
-                            </Button>
+                            </AdaptiveButton>
                           </Flex>
                         </List.Item>
                       )}

@@ -9,15 +9,13 @@ import {
 } from "@ant-design/icons";
 import { SortDirectionToLabelMap, SortKeyToLabelMap } from "./constants";
 import { ISortBy, ISortDirection, ISorter } from "../../../../entities";
-import { useMediaContext } from "../../../../contextes";
+import { AdaptiveButton } from "../../../AdaptiveButton";
 
 export const Sort: FC<ISortProps> = ({
   value,
   forbiddenSortBy: forbiddenSortByProp,
   onChange,
 }) => {
-  const { isMobile } = useMediaContext();
-
   const forbiddenSortBy = forbiddenSortByProp
     ? Array.from(new Set(forbiddenSortByProp))
     : undefined;
@@ -125,24 +123,12 @@ export const Sort: FC<ISortProps> = ({
             ],
           }}
         >
-          <Button
+          <AdaptiveButton
             type="dashed"
             icon={<CloseCircleOutlined onClick={() => onRemoveSort(sortBy)} />}
-            style={
-              isMobile
-                ? {
-                    height: "100%",
-                    wordBreak: "break-word",
-                    whiteSpace: "normal",
-                    display: "flex",
-                    alignItems: "baseline",
-                    textAlign: "start",
-                  }
-                : undefined
-            }
           >
             {`${SortKeyToLabelMap[sortBy]}: ${SortDirectionToLabelMap[direction]}`}
-          </Button>
+          </AdaptiveButton>
         </Dropdown>
       ))}
       {preparingSortBy && (
@@ -186,24 +172,12 @@ export const Sort: FC<ISortProps> = ({
             ],
           }}
         >
-          <Button
+          <AdaptiveButton
             type="dashed"
             icon={<CloseCircleOutlined onClick={onRemovePreparing} />}
-            style={
-              isMobile
-                ? {
-                    height: "100%",
-                    wordBreak: "break-word",
-                    whiteSpace: "normal",
-                    display: "flex",
-                    alignItems: "baseline",
-                    textAlign: "start",
-                  }
-                : undefined
-            }
           >
             {SortKeyToLabelMap[preparingSortBy]}
-          </Button>
+          </AdaptiveButton>
         </Dropdown>
       )}
       {canShowAddSortButton && !preparingSortBy && (

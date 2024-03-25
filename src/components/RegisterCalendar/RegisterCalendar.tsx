@@ -163,7 +163,7 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
 
   return (
     <CardWrapper wrap={wrapInCard}>
-      <Typography.Title level={5} style={{ textAlign: "center" }}>
+      <Typography.Title level={4} style={{ textAlign: "center" }}>
         Запись к специалисту
       </Typography.Title>
       <Calendar

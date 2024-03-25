@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import type { ISpecificFilter } from "../FilterSwitch";
-import { Select, Button, Flex, Typography } from "antd";
+import { Select, Flex, Typography } from "antd";
 import { DefaultOptionType } from "antd/lib/select";
 import { SPECIALIZATIONS } from "../../../../../../mocks";
 import type { ISpecialization } from "../../../../../../entities";
@@ -9,13 +9,12 @@ import { generateSpecializationsLabel } from "../../helpers";
 import "./SpecializationsFilter.css";
 import { TooltipWrapper } from "../../../../../TooltipWrapper";
 import { LABEL_OFFSET } from "./constants";
-import { useMediaContext } from "../../../../../../contextes";
+import { AdaptiveButton } from "../../../../../AdaptiveButton";
 
 export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
   data,
   onChange,
 }) => {
-  const { isMobile } = useMediaContext();
   const [open, setOpen] = useState(!data);
 
   const handleOpenChange = (open: boolean) => {
@@ -72,25 +71,13 @@ export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
         </Flex>
       }
     >
-      <Button
+      <AdaptiveButton
         type="dashed"
         icon={<CloseCircleOutlined onClick={handleClose} />}
         onClick={toggleView}
-        style={
-          isMobile
-            ? {
-                height: "100%",
-                wordBreak: "break-word",
-                whiteSpace: "normal",
-                display: "flex",
-                alignItems: "baseline",
-                textAlign: "start",
-              }
-            : undefined
-        }
       >
         {label}
-      </Button>
+      </AdaptiveButton>
     </TooltipWrapper>
   );
 };

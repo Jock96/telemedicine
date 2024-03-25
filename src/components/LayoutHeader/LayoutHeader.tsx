@@ -3,15 +3,17 @@ import { Avatar, Layout, Flex, Typography, Dropdown } from "antd";
 import { ItemType } from "antd/es/menu/hooks/useItems";
 import { NotificationOutlined } from "@ant-design/icons";
 import { photoUrl } from "../../mocks";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Routes } from "../../constants";
 import { TooltipWrapper } from "../TooltipWrapper";
 
 export const LayoutHeader: FC<ComponentProps<typeof Layout.Header>> =
   forwardRef((props, ref) => {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     const handleClick = () => {
-      navigate(Routes.PersonalArea);
+      navigate(Routes.PersonalArea, { state: { prevUrl: pathname } });
     };
     // TODO:
     const notifications: ItemType[] = [];

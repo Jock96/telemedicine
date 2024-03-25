@@ -81,7 +81,7 @@ export const CommonInfo: FC<IUser & { canEdit?: boolean }> = ({
             {tempFullName?.trim() === "" ? fullName : tempFullName}
           </Typography.Text>
         )}
-        <Flex gap={4}>
+        <Flex gap={4} wrap="wrap">
           <Typography.Text>Электронная почта:</Typography.Text>
           <Typography.Text
             editable={
@@ -96,7 +96,7 @@ export const CommonInfo: FC<IUser & { canEdit?: boolean }> = ({
             {tempEmail?.trim() === "" ? email : tempEmail}
           </Typography.Text>
         </Flex>
-        <Flex gap={4}>
+        <Flex gap={4} wrap="wrap">
           <Typography.Text>Номер телефона:</Typography.Text>
           <Typography.Text
             editable={
