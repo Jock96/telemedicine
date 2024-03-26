@@ -7,5 +7,7 @@ export type { IConsultation } from './consultation'
 export type { ICurrency } from "./currency"
 export type { IYearsOfWorkExpirience } from "./yearsOfWorkExpirience"
 export type { ISorter, ISortBy } from "./sorter"
-export { ISortDirection } from "./sorter"
 export type { IntRange } from "./common"
+export type { IWorkDuration } from "./workDuration"
+export type { IWorkTime } from "./workTime"
+export { ISortDirection } from "./sorter"

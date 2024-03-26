@@ -9,6 +9,7 @@ import {
   Modal,
   Button,
   Tooltip,
+  Popconfirm,
 } from "antd";
 import {
   EditOutlined,
@@ -92,7 +93,7 @@ export const VisitedSpecialists: FC = () => {
             key: visitedSpecialistsKey,
             label: (
               <Typography.Text strong>
-                Специалисты которых вы посетили:
+                Специалисты которых вы посетили
               </Typography.Text>
             ),
             children: (
@@ -124,7 +125,7 @@ export const VisitedSpecialists: FC = () => {
                             <Flex>
                               {!!registerSpecialistId &&
                               specialist.id === registerSpecialistId ? (
-                                <Tooltip title="Закрыть форму записи">
+                                <Tooltip trigger={["hover"]} title="Закрыть форму записи">
                                   <Button
                                     type="text"
                                     icon={<StopOutlined />}
@@ -132,7 +133,7 @@ export const VisitedSpecialists: FC = () => {
                                   />
                                 </Tooltip>
                               ) : (
-                                <Tooltip title="Записаться повторно">
+                                <Tooltip trigger={["hover"]} title="Записаться повторно">
                                   <Button
                                     type="text"
                                     icon={<HistoryOutlined />}
@@ -143,7 +144,7 @@ export const VisitedSpecialists: FC = () => {
                                 </Tooltip>
                               )}
                               {/* TODO: если комментарий уже есть - показывать изменить комментарий */}
-                              <Tooltip title="Оставить комментарий">
+                              <Tooltip trigger={["hover"]} title="Оставить комментарий">
                                 <Button
                                   type="text"
                                   icon={<EditOutlined />}
@@ -152,13 +153,20 @@ export const VisitedSpecialists: FC = () => {
                                   }
                                 />
                               </Tooltip>
-                              <Tooltip title="Удалить из истории посещения">
-                                <Button
-                                  type="text"
-                                  danger
-                                  icon={<CloseOutlined />}
-                                  onClick={() => onDelete(specialist.id)}
-                                />
+                              <Tooltip trigger={["hover"]} title="Удалить из истории посещения">
+                                <Popconfirm
+                                  title="Удалить из истории посещения"
+                                  description="Вы уверены что хотите удалить специалиста из истории посещения?"
+                                  onConfirm={() => onDelete(specialist.id)}
+                                  okText="Да"
+                                  cancelText="Нет"
+                                >
+                                  <Button
+                                    type="text"
+                                    danger
+                                    icon={<CloseOutlined />}
+                                  />
+                                </Popconfirm>
                               </Tooltip>
                             </Flex>
                           )
@@ -219,15 +227,23 @@ export const VisitedSpecialists: FC = () => {
                             >
                               Оставить комментарий
                             </AdaptiveButton>
-                            <AdaptiveButton
-                              block
-                              danger
-                              type="dashed"
-                              icon={<CloseOutlined />}
-                              onClick={() => onDelete(specialist.id)}
+                            <Popconfirm
+                              title="Удалить из истории посещения"
+                              description="Вы уверены что хотите удалить специалиста из истории посещения?"
+                              onConfirm={() => onDelete(specialist.id)}
+                              okText="Да"
+                              cancelText="Нет"
                             >
-                              Удалить
-                            </AdaptiveButton>
+                              <AdaptiveButton
+                                block
+                                danger
+                                type="dashed"
+                                icon={<CloseOutlined />}
+                                onClick={() => onDelete(specialist.id)}
+                              >
+                                Удалить
+                              </AdaptiveButton>
+                            </Popconfirm>
                           </Flex>
                         </List.Item>
                       )}

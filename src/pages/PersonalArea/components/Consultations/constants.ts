@@ -1,1 +1,3 @@
 export const PersonalAreaConsultationIsCalendarKey = 'PersonalAreaConsultationIsCalendar';
+export const PersonalAreaConsultationIsCalendarSpecialistKey = 'PersonalAreaConsultationIsCalendarSpecialistKey';
+export const PersonalAreaConsultationSpecialistFilterKey = 'PersonalAreaConsultationSpecialistFilterKey';

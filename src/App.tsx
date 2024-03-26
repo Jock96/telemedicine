@@ -2,7 +2,8 @@ import { App as AntApp, ConfigProvider } from "antd";
 import { RouterProvider } from "react-router-dom";
 import { generateRoutes } from "./constants";
 import locale from "antd/locale/ru_RU";
-import { MediaContextProvider } from "./contextes";
+import { MediaContextProvider, UserContextProvider } from "./contextes";
+import { USER } from "./mocks";
 
 // Пациент
 
@@ -28,15 +29,17 @@ import { MediaContextProvider } from "./contextes";
 
 function App() {
   // TODO: каждой специализации свой цвет
-  const specialist = false; // TODO: после авторизации проверять кто
+  const user = USER; // TODO: после авторизации проверять кто
   return (
-    <MediaContextProvider>
-      <ConfigProvider locale={locale}>
-        <AntApp>
-          <RouterProvider router={generateRoutes(specialist)} />
-        </AntApp>
-      </ConfigProvider>
-    </MediaContextProvider>
+    <UserContextProvider value={{ user }}>
+      <MediaContextProvider>
+        <ConfigProvider locale={locale}>
+          <AntApp>
+            <RouterProvider router={generateRoutes(user.isSpecialist)} />
+          </AntApp>
+        </ConfigProvider>
+      </MediaContextProvider>
+    </UserContextProvider>
   );
 }
 

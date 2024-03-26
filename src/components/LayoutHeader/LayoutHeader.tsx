@@ -48,7 +48,7 @@ export const LayoutHeader: FC<ComponentProps<typeof Layout.Header>> =
             Личный кабинет
           </Typography.Text>
         </Flex>
-        <TooltipWrapper wrap={!notifications.length} title="Уведомлений нет">
+        <TooltipWrapper trigger={["hover"]} wrap={!notifications.length} title="Уведомлений нет">
           <Dropdown menu={{ items: notifications }} placement="bottomRight">
             <Avatar
               style={{ marginLeft: "auto", cursor: "pointer" }}

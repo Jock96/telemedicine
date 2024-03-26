@@ -17,6 +17,7 @@ export const AdaptiveButton: FC<ComponentProps<typeof Button>> = (props) => {
               display: "flex",
               alignItems: "baseline",
               textAlign: "start",
+              justifyContent: "center",
             }
           : props.style
       }

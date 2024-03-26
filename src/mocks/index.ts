@@ -1,4 +1,9 @@
-import type { IntRange, ISpecialist, ISpecialization } from "../entities";
+import type {
+  IntRange,
+  ISpecialist,
+  ISpecialization,
+  IUser,
+} from "../entities";
 import type { IComment } from "../entities";
 import type { IConsultation } from "../entities";
 import type { ICurrency } from "../entities";
@@ -60,7 +65,32 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     phone: "+7 777 777 77 77",
     email: "test@test.com",
     photoUrl: photoUrl(idx),
-    workTime: {},
+    workTime: {
+      workingDayInfo: {
+        regularWeekDays: [0, 1, 2, 3, 4],
+        extraDays: Array(getRandomInt(0, 2))
+          .fill("")
+          .map(() =>
+            dayjs()
+              .add(getRandomInt(-7, 7), "day")
+              .add(getRandomInt(-24, 24), "hour")
+              .toString()
+          ),
+        extraDayRanges: [],
+      },
+      dayOfInfo: {
+        regularWeekDays: [5, 6],
+        extraDays: Array(getRandomInt(0, 2))
+          .fill("")
+          .map(() =>
+            dayjs()
+              .add(getRandomInt(-7, 7), "day")
+              .add(getRandomInt(-24, 24), "hour")
+              .toString()
+          ),
+        extraDayRanges: [],
+      },
+    },
     nearestWorkTime: "2024", // string iso ?
     visiteDates: Array(getRandomInt(0, 20))
       .fill("")
@@ -109,3 +139,9 @@ export const VISITED_SPECIALISTS = (() => {
   );
   return SPECIALISTS_LIST.filter((_, index) => rndIndexes.includes(index));
 })();
+
+export const USER: IUser = {
+  ...SPECIALISTS_LIST[0],
+  isSpecialist: true,
+  multi: false,
+};

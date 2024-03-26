@@ -1,24 +1,33 @@
 import { FC, useState } from "react";
 import { Calendar, Switch, Flex, Typography, Badge, Modal } from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
-import { PersonalAreaConsultationIsCalendarKey } from "./constants";
+import {
+  PersonalAreaConsultationIsCalendarKey,
+  PersonalAreaConsultationIsCalendarSpecialistKey,
+  PersonalAreaConsultationSpecialistFilterKey,
+} from "./constants";
 import { CONSULTATIONS } from "../../../../mocks/index";
 import "./Consultations.css";
 import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants";
 import { Filters } from "../../../../components";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { useMediaContext } from "../../../../contextes";
+import { useMediaContext, useUserContext } from "../../../../contextes";
 import { ConsultationsList } from "./components";
 
 dayjs.extend(utc);
 
 export const Consultations: FC = () => {
   const { isMobile } = useMediaContext();
+  const { user } = useUserContext();
 
-  const isCalendarFromLocalStorage = window.localStorage.getItem(
-    PersonalAreaConsultationIsCalendarKey
-  );
+  const userCalendarKey = user?.isSpecialist
+    ? PersonalAreaConsultationIsCalendarSpecialistKey
+    : PersonalAreaConsultationIsCalendarKey;
+
+  const isCalendarFromLocalStorage =
+    window.localStorage.getItem(userCalendarKey);
+
   const initIsCalendar: boolean = isCalendarFromLocalStorage
     ? JSON.parse(isCalendarFromLocalStorage)
     : true;
@@ -27,10 +36,7 @@ export const Consultations: FC = () => {
 
   const toggleView = () =>
     setIsCalendar((prev) => {
-      window.localStorage.setItem(
-        PersonalAreaConsultationIsCalendarKey,
-        JSON.stringify(!prev)
-      );
+      window.localStorage.setItem(userCalendarKey, JSON.stringify(!prev));
       return !prev;
     });
 
@@ -72,7 +78,7 @@ export const Consultations: FC = () => {
 
   return (
     <Flex vertical gap={12}>
-      <Typography.Text strong>Предстоящие консультации:</Typography.Text>
+      <Typography.Text strong>Предстоящие консультации</Typography.Text>
       <Switch
         checked={isCalendar}
         checkedChildren="Календарь"
@@ -133,6 +139,11 @@ export const Consultations: FC = () => {
           <Filters
             wrapInCard={!isMobile}
             hideSort={!isMobile}
+            key={
+              user?.isSpecialist
+                ? PersonalAreaConsultationSpecialistFilterKey
+                : undefined
+            }
             forbiddenSortBy={[
               "rating",
               "workDuration",

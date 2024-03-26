@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import { Avatar, Tag, Button, Tooltip } from "antd";
+import { Avatar, Tag, Button, Tooltip, Popconfirm } from "antd";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import type { IColumnGenerator } from "../../types";
@@ -9,7 +9,6 @@ import { DATE_AND_TIME_FORMAT } from "../../../../../../constants";
 
 // TODO: генерация разных колонок
 export const generateColumns = ({
-  specialist,
   onDeleteConsultation,
   onChangeConsultationDate,
 }: IColumnGenerator): ColumnsType<IConsultation> => [
@@ -51,7 +50,7 @@ export const generateColumns = ({
     dataIndex: "id",
     key: "edit",
     render: (id: IConsultation["id"]) => (
-      <Tooltip title="Изменить дату">
+      <Tooltip trigger={["hover"]} title="Изменить дату">
         <Button
           type="text"
           icon={<EditOutlined />}
@@ -65,13 +64,20 @@ export const generateColumns = ({
     dataIndex: "id",
     key: "cancel",
     render: (id: IConsultation["id"]) => (
-      <Tooltip title="Отменить консультацию">
-        <Button
-          type="text"
-          icon={<CloseOutlined />}
-          danger
-          onClick={() => onDeleteConsultation(id)}
-        />
+      <Tooltip trigger={["hover"]} title="Отменить консультацию">
+        <Popconfirm
+          title="Отменить консультацию"
+          description="Вы уверены что хотите отменить консультацию?"
+          onConfirm={() => onDeleteConsultation(id)}
+          okText="Да"
+          cancelText="Нет"
+        >
+          <Button
+            type="text"
+            icon={<CloseOutlined />}
+            danger
+          />
+        </Popconfirm>
       </Tooltip>
     ),
   },

@@ -57,7 +57,7 @@ export const CommonInfo: FC<IUser & { canEdit?: boolean }> = ({
           {tempFullName?.trim() === "" ? fullName : tempFullName}
         </Typography.Text>
       )}
-      <TooltipWrapper wrap={!photoUrl} title="Кликните чтобы загрузить фото">
+      <TooltipWrapper trigger={["hover"]} wrap={!photoUrl} title="Кликните чтобы загрузить фото">
         <Image
           preview={false}
           onClick={handleDownloadPhoto}

@@ -29,7 +29,7 @@ export const NumericFilterHeader: FC<NumericFilterHeaderProps> = ({
         value={type}
         style={{ display: "flex" }}
       >
-        <Tooltip title="Меньше">
+        <Tooltip trigger={["hover"]} title="Меньше">
           <Radio.Button
             value="less"
             style={{ flex: 1, display: "flex", justifyContent: "center" }}
@@ -37,7 +37,7 @@ export const NumericFilterHeader: FC<NumericFilterHeaderProps> = ({
             <LeftOutlined />
           </Radio.Button>
         </Tooltip>
-        <Tooltip title="Меньше или равно">
+        <Tooltip trigger={["hover"]} title="Меньше или равно">
           <Radio.Button
             value="less-or-equal"
             style={{ flex: 1, display: "flex", justifyContent: "center" }}
@@ -45,7 +45,7 @@ export const NumericFilterHeader: FC<NumericFilterHeaderProps> = ({
             <DoubleLeftOutlined />
           </Radio.Button>
         </Tooltip>
-        <Tooltip title="Равно">
+        <Tooltip trigger={["hover"]} title="Равно">
           <Radio.Button
             value="equal"
             style={{ flex: 1, display: "flex", justifyContent: "center" }}
@@ -53,7 +53,7 @@ export const NumericFilterHeader: FC<NumericFilterHeaderProps> = ({
             <SwapOutlined />
           </Radio.Button>
         </Tooltip>
-        <Tooltip title="Больше или равно">
+        <Tooltip trigger={["hover"]} title="Больше или равно">
           <Radio.Button
             value="more-or-equal"
             style={{ flex: 1, display: "flex", justifyContent: "center" }}
@@ -61,7 +61,7 @@ export const NumericFilterHeader: FC<NumericFilterHeaderProps> = ({
             <DoubleRightOutlined />
           </Radio.Button>
         </Tooltip>
-        <Tooltip title="Больше">
+        <Tooltip trigger={["hover"]} title="Больше">
           <Radio.Button
             value="more"
             style={{ flex: 1, display: "flex", justifyContent: "center" }}

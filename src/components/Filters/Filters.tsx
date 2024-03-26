@@ -55,7 +55,7 @@ export const Filters: FC<IFiltersProps> = ({
             key: FILTERS_KEY,
             label: <Typography.Text strong>Фильтры</Typography.Text>,
             extra: hasFilters && (
-              <Tooltip title="Сбросить">
+              <Tooltip trigger={["hover"]} title="Сбросить">
                 <Button
                   danger
                   type="text"

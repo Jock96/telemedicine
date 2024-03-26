@@ -8,4 +8,7 @@ export interface IUser extends Id {
   // единый формат + код страны
   phone?: string;
   email?: string;
+  isSpecialist?: boolean;
+  // мультиаккаунт? (специалист/юзер)
+  multi?: boolean;
 }

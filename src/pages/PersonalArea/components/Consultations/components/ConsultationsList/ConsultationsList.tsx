@@ -9,21 +9,21 @@ import {
   Tag,
   Button,
   Pagination,
+  Popconfirm,
 } from "antd";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import type { IConsultationsListProps } from "./types";
 import type { IConsultation } from "../../../../../../entities";
 import { generateColumns } from "./constants";
 import { SpecialistCard } from "../../../../../../components";
-import { useMediaContext } from "../../../../../../contextes";
+import { useMediaContext, useUserContext } from "../../../../../../contextes";
 import { getFullName } from "../../../../../../helpers";
 import { DATE_AND_TIME_FORMAT } from "../../../../../../constants";
 import dayjs from "dayjs";
 
 export const ConsultationsList: FC<IConsultationsListProps> = ({ data }) => {
   const { isMobile } = useMediaContext();
-
-  const specialist = false; // TODO: после авторизации проверять кто и менять вью (надо ли ?)
+  const { user } = useUserContext();
 
   const onDeleteConsultation = (id: IConsultation["id"]) => {
     // TODO:
@@ -34,7 +34,6 @@ export const ConsultationsList: FC<IConsultationsListProps> = ({ data }) => {
   };
 
   const columns = generateColumns({
-    specialist,
     onDeleteConsultation,
     onChangeConsultationDate,
   });
@@ -63,7 +62,13 @@ export const ConsultationsList: FC<IConsultationsListProps> = ({ data }) => {
             dataSource={data}
             renderItem={({ specialist, specialization, time, id }) => (
               <>
-                <List.Item onClick={() => showUserInfo(id)}>
+                <List.Item
+                  onClick={() => {
+                    if (user?.isSpecialist) return;
+
+                    showUserInfo(id);
+                  }}
+                >
                   <List.Item.Meta
                     avatar={<Avatar src={specialist?.photoUrl} />}
                     title={specialist ? getFullName(specialist) : null}
@@ -97,15 +102,22 @@ export const ConsultationsList: FC<IConsultationsListProps> = ({ data }) => {
                     >
                       Изменить дату
                     </Button>
-                    <Button
-                      block
-                      danger
-                      type="dashed"
-                      icon={<CloseOutlined />}
-                      onClick={() => onDeleteConsultation(id)}
+                    <Popconfirm
+                      title="Отменить консультацию"
+                      description="Вы уверены что хотите отменить консультацию?"
+                      onConfirm={() => onDeleteConsultation(id)}
+                      okText="Да"
+                      cancelText="Нет"
                     >
-                      Отменить
-                    </Button>
+                      <Button
+                        block
+                        danger
+                        type="dashed"
+                        icon={<CloseOutlined />}
+                      >
+                        Отменить
+                      </Button>
+                    </Popconfirm>
                   </Flex>
                 </List.Item>
               </>
@@ -123,7 +135,18 @@ export const ConsultationsList: FC<IConsultationsListProps> = ({ data }) => {
         <Table
           style={{ cursor: "pointer" }}
           onRow={({ id }) => ({
-            onClick: () => showUserInfo(id),
+            onClick: ({ target }: any) => {
+              if (
+                target.localName === "path" ||
+                target.localName === "button" ||
+                target.localName === "svg" ||
+                (target.localName === "span" && !target.className) ||
+                user?.isSpecialist
+              )
+                return;
+
+              showUserInfo(id);
+            },
           })}
           columns={columns}
           // TODO:

@@ -15,6 +15,7 @@ export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
   data,
   onChange,
 }) => {
+  // TODO: !data ? true : !prevData решает проблему первого открытия, но если есть данные - меню всегда открыто
   const [open, setOpen] = useState(!data);
 
   const handleOpenChange = (open: boolean) => {
@@ -47,7 +48,7 @@ export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
       mode="multiple"
       allowClear
       className="specializationsSelect"
-      placeholder="Начните вводить для поиска"
+      placeholder="Поиск"
       value={data?.value}
       onChange={handleChange}
       options={options}
@@ -61,6 +62,7 @@ export const SpecializationsFilter: FC<ISpecificFilter<"specializations">> = ({
   ) : (
     <TooltipWrapper
       wrap={!!rest.length}
+      trigger={["hover"]}
       title={
         <Flex gap={4}>
           {

@@ -12,10 +12,9 @@ import {
   TimePicker,
 } from "antd";
 import { SelectInfo } from "antd/es/calendar/generateCalendar";
-import { DATE_FORMAT, TIME_FORMAT } from "../../constants";
+import { DATE_FORMAT, HOURS, MINUTES, TIME_FORMAT, TIME_SELECT_TYPE } from "../../constants";
 import "./RegisterCalendar.css";
 import type { IRegisterCalendarProps } from "./types";
-import { HOURS, MINUTES, TIME_SELECT_TYPE } from "./constants";
 import type { RadioChangeEvent } from "antd/es/radio";
 import type { ISpecialization } from "../../entities";
 import dayjs from "dayjs";
