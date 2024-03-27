@@ -28,11 +28,10 @@ import {
   TIME_SELECT_TYPE,
 } from "../../../../constants";
 import { recomendTimeLabelGenerator } from "../../../../helpers";
-import { useMediaContext } from "../../../../contextes";
 
 export const Specializations: FC = () => {
-  const { isMobile } = useMediaContext();
-
+  // TODO: стоимость услуги по специализации
+  // TODO: подумать над валидацией специализации
   // TODO: получать с сервера
   const [first, second, third, fourth, fifth, ...rest] = SPECIALIZATIONS;
   const specializations = [first, second, third, fourth, fifth];
@@ -90,10 +89,6 @@ export const Specializations: FC = () => {
     setConfiguredSpecialization(specialization);
   };
 
-  const handleSettingsClose = () => {
-    setConfiguredSpecialization(undefined);
-  };
-
   const [timeSelectType, setTimeSelectType] = useState(
     TIME_SELECT_TYPE.RECOMEND
   );
@@ -101,6 +96,12 @@ export const Specializations: FC = () => {
   const [customDurationValue, setCustomDurationValue] = useState<
     IWorkDuration["value"] | undefined
   >();
+
+  const handleSettingsClose = () => {
+    setConfiguredSpecialization(undefined);
+    setTimeSelectType(TIME_SELECT_TYPE.RECOMEND);
+    setCustomDurationValue(undefined);
+  };
 
   const handleCustomDurationChange = (value?: IWorkDuration["value"]) => {
     setCustomDurationValue((prevValue) => ({ ...prevValue, ...value }));
@@ -205,7 +206,7 @@ export const Specializations: FC = () => {
         onCancel={handleSettingsClose}
         width="100%"
         centered
-        zIndex={2000}
+        zIndex={3000}
       >
         <Flex vertical gap={8}>
           <Radio.Group
@@ -227,13 +228,14 @@ export const Specializations: FC = () => {
               Самостоятельно
             </Radio.Button>
           </Radio.Group>
-          <Flex gap={8} wrap="wrap" justify={isMobile ? "center" : undefined}>
+          <Flex gap={8} wrap="wrap">
             {timeSelectType === TIME_SELECT_TYPE.RECOMEND &&
               RECOMEND_TIME_DURATION.map((value) => (
                 <Button
                   type="dashed"
                   key={`${value.hours}${value.minutes}`}
                   onClick={() => handleDurationConfirm(value)}
+                  style={{ flex: 1 }}
                 >
                   {recomendTimeLabelGenerator(value)}
                 </Button>

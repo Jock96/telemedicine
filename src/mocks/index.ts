@@ -68,27 +68,57 @@ export const SPECIALISTS_LIST: ISpecialist[] = Array<ISpecialist>(20)
     workTime: {
       workingDayInfo: {
         regularWeekDays: [0, 1, 2, 3, 4],
-        extraDays: Array(getRandomInt(0, 2))
-          .fill("")
-          .map(() =>
-            dayjs()
-              .add(getRandomInt(-7, 7), "day")
-              .add(getRandomInt(-24, 24), "hour")
-              .toString()
-          ),
-        extraDayRanges: [],
+        extraDays: [
+          {
+            from: dayjs().add(1, "day").toString(),
+            to: dayjs().add(1, "day").add(1, "hour").toString(),
+            allDay: true,
+          },
+          {
+            from: dayjs().add(2, "day").toString(),
+            to: dayjs().add(2, "day").add(1, "hour").toString(),
+            allDay: true,
+          },
+        ],
+        extraDayRanges: [
+          {
+            from: {
+              value: dayjs().add(getRandomInt(7, 9), "day").toString(),
+            },
+            to: {
+              value: dayjs().add(getRandomInt(9, 12), "day").toString(),
+            },
+          },
+        ],
       },
-      dayOfInfo: {
+      dayOffInfo: {
         regularWeekDays: [5, 6],
-        extraDays: Array(getRandomInt(0, 2))
-          .fill("")
-          .map(() =>
-            dayjs()
-              .add(getRandomInt(-7, 7), "day")
-              .add(getRandomInt(-24, 24), "hour")
-              .toString()
-          ),
-        extraDayRanges: [],
+        extraDays: [
+          {
+            from: dayjs()
+              .add(1, "day")
+              .set("hour", 0)
+              .set("second", 0)
+              .toString(),
+            to: dayjs()
+              .add(1, "day")
+              .set("hour", 4)
+              .set("second", 0)
+              .toString(),
+          },
+        ],
+        extraDayRanges: [
+          {
+            from: {
+              value: dayjs().add(getRandomInt(12, 14), "day").toString(),
+              allDay: true,
+            },
+            to: {
+              value: dayjs().add(getRandomInt(14, 16), "day").toString(),
+              allDay: true,
+            },
+          },
+        ],
       },
     },
     nearestWorkTime: "2024", // string iso ?
@@ -126,7 +156,7 @@ export const CONSULTATIONS: IConsultation[] = Array<IConsultation>(20)
     time: dayjs()
       .add(getRandomInt(0, 7), "day")
       .add(getRandomInt(0, 24), "hour")
-      .toString(), // TODO iso
+      .toString(), // iso
   }));
 
 export const VISITED_SPECIALISTS = (() => {

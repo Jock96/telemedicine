@@ -37,6 +37,9 @@ export const RECOMEND_TIME_DURATION: Required<IWorkDuration["value"]>[] =
     )
   ).flat();
 
+export const WEEK_DAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+export const WEEK_SHORT_DAYS = ["Пн.", "Вт.", "Ср.", "Чт.", "Пт.", "Сб.", "Вс."]
+
 export const generateRoutes = (specialist?: boolean) =>
   createBrowserRouter(
     specialist

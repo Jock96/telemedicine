@@ -1,17 +1,29 @@
 import type { IntRange } from "./common";
 
-interface DayRange {
-    from: string; // ISO
-    to: string; // ISO
+export interface IDayRange {
+  from: string; // ISO
+  to: string; // ISO
+  allDay?: boolean;
+}
+
+export interface IRangeOfDays {
+  from: {
+    value: string; // ISO
+    allDay?: boolean;
+  };
+  to: {
+    value: string; // ISO
+    allDay?: boolean;
+  };
 }
 
 interface IDayInfo {
   regularWeekDays: IntRange<0, 7>[]; // 0 - 6 (пн - вс)
-  extraDays: string[]; // ISO
-  extraDayRanges: DayRange[]; // ISO from to
+  extraDays: IDayRange[];
+  extraDayRanges: IRangeOfDays[];
 }
 
 export interface IWorkTime {
   workingDayInfo: IDayInfo;
-  dayOfInfo: IDayInfo;
+  dayOffInfo: IDayInfo;
 }

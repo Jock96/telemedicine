@@ -97,8 +97,9 @@ export const NearestWorkTimeFilter: FC<ISpecificFilter<"nearestWorkTime">> = ({
           onChange={handleChangeRange}
           format={[DATE_FORMAT, DATE_FORMAT]}
           disabledDate={(date) =>
-            date.unix() < dayjs().unix() ||
-            date.unix() > dayjs().add(1, "year").unix()
+            date.startOf("day").unix() < dayjs().startOf("day").unix() ||
+            date.startOf("day").unix() >
+              dayjs().startOf("day").add(1, "year").unix()
           }
         />
       ) : (
@@ -109,8 +110,9 @@ export const NearestWorkTimeFilter: FC<ISpecificFilter<"nearestWorkTime">> = ({
           onChange={handleChange}
           format={DATE_FORMAT}
           disabledDate={(date) =>
-            date.unix() < dayjs().unix() ||
-            date.unix() > dayjs().add(1, "year").unix()
+            date.startOf("day").unix() < dayjs().startOf("day").unix() ||
+            date.startOf("day").unix() >
+              dayjs().startOf("day").add(1, "year").unix()
           }
         />
       )}

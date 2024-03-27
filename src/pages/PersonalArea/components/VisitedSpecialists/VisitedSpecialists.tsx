@@ -34,6 +34,10 @@ import { useMediaContext } from "../../../../contextes";
 export const VisitedSpecialists: FC = () => {
   const { isMobile } = useMediaContext();
 
+  // TODO: получать с сервера
+  // TODO: для специалиста какое инфо тут нужно
+  const visitedSpecialist = VISITED_SPECIALISTS
+
   const [selectedSpecialistId, setSelectedSpecialistId] =
     useState<ISpecialist["id"]>();
 
@@ -45,7 +49,7 @@ export const VisitedSpecialists: FC = () => {
     setSelectedSpecialistId(undefined);
   };
 
-  const selectedSpecialist = VISITED_SPECIALISTS.find(
+  const selectedSpecialist = visitedSpecialist.find(
     ({ id }) => id === selectedSpecialistId
   );
 
@@ -60,7 +64,7 @@ export const VisitedSpecialists: FC = () => {
     setCommentedSpecialistId(undefined);
   };
 
-  const commentedSpecialist = VISITED_SPECIALISTS.find(
+  const commentedSpecialist = visitedSpecialist.find(
     ({ id }) => id === commentedSpecialistId
   );
 
@@ -81,7 +85,7 @@ export const VisitedSpecialists: FC = () => {
 
   const { hasFilters } = useFilters(visitedSpecialistsKey);
 
-  if (!VISITED_SPECIALISTS.length) return null;
+  if (!visitedSpecialist.length) return null;
 
   return (
     <>

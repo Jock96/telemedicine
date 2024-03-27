@@ -3,10 +3,9 @@ import { Modal, Button, Input, Rate, Flex, Typography } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import { ModalProps } from "antd";
 
-export const CommentModal: FC<Pick<ModalProps, "open" | "onCancel">> = ({
-  open,
-  onCancel,
-}) => {
+export const CommentModal: FC<
+  Pick<ModalProps, "open"> & { onCancel(): void }
+> = ({ open, onCancel }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState<string>();
 
@@ -18,11 +17,17 @@ export const CommentModal: FC<Pick<ModalProps, "open" | "onCancel">> = ({
     // TODO:
   };
 
+  const handleCancel = () => {
+    setRating(0);
+    setComment(undefined);
+    onCancel();
+  };
+
   return (
     <Modal
       centered
       open={open}
-      onCancel={onCancel}
+      onCancel={handleCancel}
       title="Оставьте ваш комментарий по специалисту"
       footer={
         <Button type="primary" onClick={submit}>

@@ -1,8 +1,9 @@
 import { FC, useState } from "react";
 import type { IAddSpecializationProps } from "./types";
-import { Button, Select } from "antd";
+import { Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import type { ISpecialization } from "../../../../../../entities";
+import { AdaptiveButton } from "../../../../../../components";
 
 export const AddSpecialization: FC<IAddSpecializationProps> = ({
   specializations,
@@ -38,13 +39,13 @@ export const AddSpecialization: FC<IAddSpecializationProps> = ({
       showSearch
     />
   ) : (
-    <Button
+    <AdaptiveButton
       size="small"
-      type="dashed"
+      type="text"
       icon={<PlusOutlined />}
       onClick={handlePreapareToAdd}
     >
-      Добавить специализацию
-    </Button>
+      Добавить
+    </AdaptiveButton>
   );
 };

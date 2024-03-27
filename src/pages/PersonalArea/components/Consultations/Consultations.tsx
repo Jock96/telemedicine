@@ -21,6 +21,9 @@ export const Consultations: FC = () => {
   const { isMobile } = useMediaContext();
   const { user } = useUserContext();
 
+  // TODO: получать с сервера
+  const consultations = CONSULTATIONS;
+
   const userCalendarKey = user?.isSpecialist
     ? PersonalAreaConsultationIsCalendarSpecialistKey
     : PersonalAreaConsultationIsCalendarKey;
@@ -54,11 +57,12 @@ export const Consultations: FC = () => {
     setOpen(false);
   };
 
-  const [nearestConsultationTime, latestConsultationTime] = CONSULTATIONS.sort(
-    ({ time: firstTime }, { time: secondTime }) =>
-      dayjs(firstTime).unix() - dayjs(secondTime).unix()
-  )
-    .filter((_, index) => index === 0 || index === CONSULTATIONS.length - 1)
+  const [nearestConsultationTime, latestConsultationTime] = consultations
+    .sort(
+      ({ time: firstTime }, { time: secondTime }) =>
+        dayjs(firstTime).unix() - dayjs(secondTime).unix()
+    )
+    .filter((_, index) => index === 0 || index === consultations.length - 1)
     .map(({ time }) => dayjs(time));
 
   const validRange: [dayjs.Dayjs, dayjs.Dayjs] = [
@@ -94,25 +98,27 @@ export const Consultations: FC = () => {
             validRange={validRange}
             cellRender={(date) =>
               !isMobile
-                ? CONSULTATIONS.filter(
-                    ({ time }) =>
-                      date.date() === dayjs(time).date() &&
-                      date.month() === dayjs(time).month()
-                  ).map(({ id, time }) => (
-                    <Flex key={id} vertical gap={2}>
-                      <Flex gap={2}>
-                        <Badge color="green" />
-                        <Typography.Text ellipsis>
-                          {dayjs(time).format(TIME_FORMAT)}
-                        </Typography.Text>
+                ? consultations
+                    .filter(
+                      ({ time }) =>
+                        date.date() === dayjs(time).date() &&
+                        date.month() === dayjs(time).month()
+                    )
+                    .map(({ id, time }) => (
+                      <Flex key={id} vertical gap={2}>
+                        <Flex gap={2}>
+                          <Badge color="green" />
+                          <Typography.Text ellipsis>
+                            {dayjs(time).format(TIME_FORMAT)}
+                          </Typography.Text>
+                        </Flex>
                       </Flex>
-                    </Flex>
-                  ))
+                    ))
                 : null
             }
             onSelect={handleSelect}
             disabledDate={(date) =>
-              !CONSULTATIONS.filter(
+              !consultations.filter(
                 ({ time }) =>
                   date.date() === dayjs(time).date() &&
                   date.month() === dayjs(time).month()
@@ -128,8 +134,8 @@ export const Consultations: FC = () => {
             title={`Записи на ${date?.format(DATE_FORMAT)}`}
           >
             <ConsultationsList
-              data={CONSULTATIONS.filter(
-                ({ time }) => date?.date() === dayjs(time).date()
+              data={consultations.filter(
+                ({ time }) => date?.unix() === dayjs(time).unix()
               )}
             />
           </Modal>
@@ -151,7 +157,7 @@ export const Consultations: FC = () => {
             ]}
             forbiddenFilters={["yearsOfWorkExpirience", "rating"]}
           />
-          <ConsultationsList data={CONSULTATIONS} />
+          <ConsultationsList data={consultations} />
         </>
       )}
     </Flex>

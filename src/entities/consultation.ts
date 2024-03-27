@@ -7,5 +7,5 @@ export interface IConsultation extends Id {
   specialist?: ISpecialist;
   specialization: ISpecialization;
   user?: IUser;
-  time: string; // TODO iso
+  time: string; // iso
 }

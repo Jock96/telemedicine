@@ -12,10 +12,9 @@ export interface ISpecialist extends IUser {
     workDuration: IWorkDuration[]; // длительность консультации - iso
     comments: IComment[]; // комменты
     specializations: ISpecialization[]; // специализации
-    workTime: IWorkTime// TODO: гибкая настройка по дням
+    workTime: IWorkTime// гибкая настройка по дням
     pricing: IPrice // цена за прием - надо сделать зависимость от специализации
     nearestWorkTime: string; // ближайшее время записи - iso
     slots: ISlot[]; // свободные слоты
     visiteDates: string[]; // даты посещений (прошедшие и предстоящие)
-    // TODO: (nice to have) больницы в которых работает и часы работы в ней - для докторов
 }

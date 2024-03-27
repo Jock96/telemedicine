@@ -12,7 +12,13 @@ import {
   TimePicker,
 } from "antd";
 import { SelectInfo } from "antd/es/calendar/generateCalendar";
-import { DATE_FORMAT, HOURS, MINUTES, TIME_FORMAT, TIME_SELECT_TYPE } from "../../constants";
+import {
+  DATE_FORMAT,
+  HOURS,
+  MINUTES,
+  TIME_FORMAT,
+  TIME_SELECT_TYPE,
+} from "../../constants";
 import "./RegisterCalendar.css";
 import type { IRegisterCalendarProps } from "./types";
 import type { RadioChangeEvent } from "antd/es/radio";
@@ -69,8 +75,9 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
 
   const handleCancel = () => {
     setSelectedSpecialization(undefined);
-    setOpen(false);
+    setTimeSelectType(TIME_SELECT_TYPE.RECOMEND);
     setDate(undefined);
+    setOpen(false);
   };
 
   const [currentWorkDuration] = selectedSpecialization
@@ -245,12 +252,13 @@ export const RegisterCalendar: FC<IRegisterCalendarProps> = ({
           ) : null}
           {timeSelectType === TIME_SELECT_TYPE.RECOMEND &&
             !!segments.length && (
-              <Flex wrap="wrap" gap={8} justify="center">
+              <Flex wrap="wrap" gap={8}>
                 {segments.map((segment) => (
                   <Button
                     key={segment.start.toString()}
                     type="dashed"
                     onClick={() => onApplyTime([segment.start, segment.end])}
+                    style={{ flex: 1 }}
                   >
                     {generateSegmentLabel(segment)}
                   </Button>
